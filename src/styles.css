@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+    h1 {
+        @apply font-extrabold text-3xl text-gray-900;
+    }
+    h2 {
+        @apply font-extrabold text-2xl text-gray-900;
+    }
+    h3 {
+        @apply font-extrabold text-xl text-gray-900;
+    }
+    h4 {
+        @apply font-extrabold text-lg text-gray-900;
+    }
+    h5 {
+        @apply font-extrabold text-gray-900;
+    }
+    h6 {
+        @apply font-extrabold text-gray-900;
+    }
+    p, li {
+        @apply text-gray-600;
+    }
+}
+
+@layer components {
+    /* Grayscale */
+    .grayscale-title {
+        @apply text-gray-900;
+    }
+    .grayscale-body {
+        @apply text-gray-600;
+    }
+    .grayscale-label {
+        @apply text-gray-400;
+    }
+    .grayscale-line {
+        @apply text-gray-300;
+    }
+    .grayscale-ligh-bg {
+        @apply text-gray-200;
+    }
+    .grayscale-off-white {
+        @apply text-white;
+    }
+    /* Layout */
+    .section-block {
+        @apply flex flex-col items-center space-y-8 max-w-xl mx-auto;
+    }
+    .section-block-lg {
+        @apply flex flex-col items-center space-y-8 max-w-2xl mx-auto;
+    }
+    .btn-blue {
+        @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+    }
+}
+
+@layer utilities {
+    /* Icons */
+    .feather {
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        vertical-align: top;
+        display: inline;
+    }
+    /* Animations */
+    .wave {
+        animation-name: wave-animation;
+        /* Refers to the name of your @keyframes element below */
+        animation-duration: 2.5s;
+        /* Change to speed up or slow down */
+        animation-iteration-count: infinite;
+        /* Never stop waving :) */
+        transform-origin: 70% 70%;
+        /* Pivot around the bottom-left palm */
+        display: inline-block;
+    }
+    @keyframes wave-animation {
+        0% {
+            transform: rotate( 0.0deg)
+        }
+        10% {
+            transform: rotate(14.0deg)
+        }
+        /* The following five values can be played with to make the waving more or less extreme */
+        20% {
+            transform: rotate(-8.0deg)
+        }
+        30% {
+            transform: rotate(14.0deg)
+        }
+        40% {
+            transform: rotate(-4.0deg)
+        }
+        50% {
+            transform: rotate(10.0deg)
+        }
+        60% {
+            transform: rotate( 0.0deg)
+        }
+        /* Reset for the last half to pause */
+        100% {
+            transform: rotate( 0.0deg)
+        }
+    }
+    @variants hover, focus {
+        .filter-none {
+            filter: none;
+        }
+        .filter-grayscale {
+            filter: grayscale(100%);
+        }
+    }
+}
