@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index",
     "dev": "nodemon src/index",
-    "build-css": "npx tailwindcss-cli@latest build ./src/styles.css -o ./src/public/css/styles.css"
+    "build-css": "npx tailwindcss-cli@latest build ./src/css/styles.css -o ./src/public/css/styles.css",
+    "build-js": "parcel build src/js/main.js --target browser --out-dir src/public/bundle --out-file bundle --no-minify"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "express-handlebars": "^5.2.0",
     "feather-icons": "^4.28.0",
     "mongoose": "^5.11.15",
-    "tailwindcss": "^2.0.2"
+    "tailwindcss": "^2.0.2",
+    "tippy.js": "^6.2.7"
   }
 }

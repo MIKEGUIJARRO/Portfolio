@@ -10,7 +10,7 @@
         specializing in building and designing
         websites and applications, focusing on the business value of tech development and the creative impact of my
         code.</p>
-    <a href="#" class="bg-gray-900 grayscale-off-white px-6 py-3 border-gray-500 rounded-full">Connect with me</a>
+    <a href="#" class="btn-main">Connect with me</a>
 </div>
 
 {{!-- About Me --}}
@@ -30,7 +30,6 @@
 <div class="section-block-lg mt-32">
     <h3>Skills & Knowledge</h3>
     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
-
         <div class="col-span-2 sm:col-span-4">
             <h4 class="mb-2">Development</h4>
             <ul class="flex flex-col space-y-2  ">
@@ -52,7 +51,6 @@
                 <li>Figma</li>
             </ul>
         </div>
-
         <div class="col-span-2">
             <h4 class="mb-2">Design</h4>
             <ul class="flex flex-col space-y-1">
@@ -75,16 +73,22 @@
             <h4 class="mb-2">Education</h4>
             <ul class="flex flex-col space-y-2">
                 <li>
-                    <svg
-                        class="feather mr-1 w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
-                        <use xlink:href="icons/feather-sprite.svg#calendar" class="m-0" />
-                    </svg>
+                    <span class="mr-1">
+                        <svg id="date-college"
+                            class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                            <use xlink:href="icons/feather-sprite.svg#calendar" class="m-0" />
+                        </svg>
+                    </span>
                     <span class="font-semibold">Técnologico de Monterrey:</span> <br> Engineering in Business and IT
                 </li>
                 <li>
-                    <svg class="feather mr-1 w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
-                        <use xlink:href="icons/feather-sprite.svg#calendar" class="m-0" />
-                    </svg>
+                    <span class="mr-1">
+                        <svg id="date-school"
+                            class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                            <use xlink:href="icons/feather-sprite.svg#calendar" class="m-0" />
+                        </svg>
+                    </span>
+
                     <span class="font-semibold">Salesiano Institute:</span> <br> Computer Science specialization
                 </li>
             </ul>
@@ -92,19 +96,31 @@
     </div>
 </div>
 
-{{!-- <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-    <div class="md:flex">
-        <div class="md:flex-shrink-0">
-            <img class="h-48 w-full object-cover md:w-48"
-                src="https://images.unsplash.com/photo-1515711660811-48832a4c6f69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80"
-                alt="Man looking at item at a store">
-        </div>
-        <div class="p-8">
-            <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Case study</div>
-            <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Finding
-                customers for your new business</a>
-            <p class="mt-2 text-gray-500">Getting a new business off the ground is a lot of hard work. Here are five
-                ideas you can use to find your first customers.</p>
-        </div>
+{{!-- Projects & Work --}}
+
+<div class="section-block-lg mt-32">
+    <h3>The work I do and the projects I have done</h3>
+    {{>cardImage}}
+    {{>cardImage}}
+    {{>cardImage}}
+</div>
+
+{{!-- Other projects --}}
+<div class="section-block-lg mt-32">
+    <h3>Other Noteworthy Projects</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        {{>card}}
+        {{>card}}
+        {{>card}}
     </div>
-</div> --}}
+</div>
+
+{{!-- Get in touch --}}
+<div class="section-block-lg mt-32">
+    <h3>Get in touch!</h3>
+    <p class="text-center">I am currently looking for a new job opportunity. I can ensure that even though I don’t have
+        any professional
+        experience I am driven learner focused on getting the best results in my work. If you liked my work send me a
+        message, my inbox is always open.</p>
+    <a href="#" class="btn-main">Connect with me</a>
+</div>

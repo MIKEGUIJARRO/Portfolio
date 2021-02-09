@@ -13,7 +13,6 @@ const app = express();
 
 //Settings
 app.set("port", process.env.PORT || 5000);
-console.log(app);
 app.set("views", path.join(rootDir, "views"))
 
 //Html templating setup
