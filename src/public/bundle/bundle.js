@@ -5365,22 +5365,32 @@ exports.default = _default;
 },{}],"epB2":[function(require,module,exports) {
 "use strict";
 
-var _tippy = _interopRequireDefault(require("tippy.js"));
+var _tippy2 = _interopRequireWildcard(require("tippy.js"));
 
 require("tippy.js/dist/tippy.css");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _tippy;
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //https://processwire.com/talk/topic/21154-how-to-use-tippyjs-in-a-module/
-(0, _tippy.default)('#date-college', {
+(0, _tippy2.default)('#date-college', {
   content: 'August 2018 - Present<br>Expected: December 2022',
   animateFill: true,
   allowHTML: true
 });
-(0, _tippy.default)('#date-school', {
+(0, _tippy2.default)('#date-school', {
   content: 'August 2015 - June 2018',
   animateFill: true,
   allowHTML: true
 });
+(0, _tippy2.default)('#tec', (_tippy = {
+  content: 'Private University #1 in Mexico',
+  followCursor: true
+}, _defineProperty(_tippy, "followCursor", 'horizontal'), _defineProperty(_tippy, "plugins", [_tippy2.followCursor]), _defineProperty(_tippy, "animateFill", true), _tippy));
 },{"tippy.js":"DpGZ","tippy.js/dist/tippy.css":"VOaH"}]},{},["epB2"], null)
 //# sourceMappingURL=/bundle.js.map
