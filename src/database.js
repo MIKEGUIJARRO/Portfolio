@@ -8,7 +8,6 @@ const initializeFirebaseApp = () => {
         credential: admin.credential.cert(SERVICEACCOUNT),
         databaseURL: process.env.DATABASEURL,
     });
-
 }
 
 const db = () => {

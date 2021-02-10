@@ -44,5 +44,10 @@ app.use(express.static(path.join(rootDir, "public")));
 //Routes
 app.use(require("./routes/index"));
 
+//Page not found response
+app.use((req, res)=>{
+    res.status(404).render("404", {title: "Page not found", navError: "true"});
+});
+
 
 module.exports = app;

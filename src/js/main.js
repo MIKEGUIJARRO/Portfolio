@@ -27,3 +27,9 @@ tippy('#tec', {
   ],
   animateFill: true,
 });
+
+tippy('#info', {
+  content: 'More relevant projects with descriptive images of the project done.',
+  animateFill: true,
+  allowHTML: true
+});

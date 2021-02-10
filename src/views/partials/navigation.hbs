@@ -1,7 +1,10 @@
 <div class="flex justify-between py-8">
+    {{#if navUser }}
     <ul class="flex flex-row space-x-4">
-        <li><a href="#" class="border px-3 py-1 border-gray-900 rounded grayscale-title hover:bg-gray-900 hover:text-white transition">Resume</a></li>
-        <li><a href="#" class="border px-3 py-1 border-gray-900 rounded grayscale-title hover:bg-gray-900 hover:text-white transition">Transcript</a></li>
+        <li><a href="#" class="btn-square-rounded">Resume</a>
+        </li>
+        <li><a href="#" class="btn-square-rounded">Transcript</a>
+        </li>
     </ul>
 
     <ul class="flex flex-row space-x-8">
@@ -10,4 +13,16 @@
         <li><a href="#work" class="grayscale-title">Work</a></li>
         <li><a href="#contact" class="grayscale-title">Contact</a></li>
     </ul>
+    {{else if dashboard}}
+    <ul class="flex flex-row space-x-8">
+        <li><a href="/" class="btn-main">Home</a></li>
+    </ul>
+    <ul class="flex flex-row space-x-8">
+        <li><a href="#" class="grayscale-title">Logout</a></li>
+    </ul>
+    {{else if navError}}
+    <ul class="flex flex-row space-x-8">
+        <li><a href="/" class="btn-main">Home</a></li>
+    </ul>
+    {{/if}}
 </div>
