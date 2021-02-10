@@ -1,15 +1,17 @@
 const express = require("express"),
     exphbs = require("express-handlebars"),
-    bodyparser = require("body-parser");
+    bodyparser = require("body-parser"),
+    morgan = require("morgan");
 
 const path = require("path");
 const rootDir = require("./lib/path");
 
-//Database setup
-//const mongodb = require("./database");
 
 //Initialization
 const app = express();
+const { initializeFirebaseApp } = require("./database");
+initializeFirebaseApp();
+
 
 //Settings
 app.set("port", process.env.PORT || 5000);
@@ -34,6 +36,7 @@ app.set("view engine", ".hbs");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+app.use(morgan("dev"));
 
 //Public
 app.use(express.static(path.join(rootDir, "public")));
