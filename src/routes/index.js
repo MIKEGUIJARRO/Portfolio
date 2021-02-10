@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 
 //Dashboard configuration
 router.get("/dashboard", (req, res) => {
-    res.render("dashboard", {title: "Dashboard", dashboard: true});
+    res.render("dashboard", {title: "Dashboard", dashboard: true });
 });
 
 module.exports = router;

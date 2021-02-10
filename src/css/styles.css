@@ -6,22 +6,22 @@
         scroll-behavior: smooth;
     }
     h1 {
-        @apply font-extrabold text-3xl text-gray-900;
+        @apply font-extrabold text-3xl;
     }
     h2 {
-        @apply font-extrabold text-2xl text-gray-900;
+        @apply font-extrabold text-2xl;
     }
     h3 {
-        @apply font-extrabold text-xl text-gray-900;
+        @apply font-extrabold text-xl;
     }
     h4 {
-        @apply font-extrabold text-lg text-gray-900;
+        @apply font-extrabold text-lg;
     }
     h5 {
-        @apply font-extrabold text-gray-900;
+        @apply font-extrabold;
     }
     h6 {
-        @apply font-extrabold text-gray-900;
+        @apply font-extrabold;
     }
     p, li {
         @apply text-gray-600;
