@@ -28,8 +28,14 @@ tippy('#tec', {
   animateFill: true,
 });
 
-tippy('#info', {
-  content: 'More relevant projects with descriptive images of the project done.',
+tippy('#info-main', {
+  content: 'More relevant projects with an image of each project.',
+  animateFill: true,
+  allowHTML: true
+});
+
+tippy('#info-others', {
+  content: 'Normal projects without an image of each project.',
   animateFill: true,
   allowHTML: true
 });

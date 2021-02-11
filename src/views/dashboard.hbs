@@ -1,20 +1,20 @@
 {{!-- Dashboard configuration --}}
 <div class="pt-32">
-    <h1 class="grayscale-title">Dashboard</h1>
+    <h1 class="font-title">Dashboard</h1>
     <div class="section-block-full">
         <div class="pt-16 flex flex-row items-center">
             <span class="mr-2">
-                <svg id="info"
+                <svg id="info-main"
                     class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
                     <use xlink:href="icons/feather-sprite.svg#info" class="m-0" />
                 </svg>
             </span>
-            <h3 class="grayscale-title">
+            <h3 class="font-title">
                 Main Projects & Work
             </h3>
         </div>
         <div class="section-block-lg ">
-            {{>addCard}}
+            {{>addCard link="/add-main-element"}}
             {{>cardImage}}
             {{>cardImage}}
             {{>cardImage}}
@@ -23,17 +23,17 @@
     <div class="section-block-full">
         <div class="pt-16 flex flex-row items-center">
             <span class="mr-2">
-                <svg id="info"
+                <svg id="info-others"
                     class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
                     <use xlink:href="icons/feather-sprite.svg#info" class="m-0" />
                 </svg>
             </span>
-            <h3 class="grayscale-title">
+            <h3 class="font-title">
                 Other Noteworthy Projects
             </h3>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {{>addCard}}
+            {{>addCard link="/add-element"}}
             {{>card}}
             {{>card}}
             {{>card}}

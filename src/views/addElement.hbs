@@ -1,0 +1,44 @@
+{{!-- Dashboard configuration --}}
+<div class="pt-32">
+    <h1 class="font-title">Add Element</h1>
+    <div class="section-block-full">
+        <div class="section-block-lg">
+            <div class="pt-16 flex flex-row items-center">
+                <span class="mr-2">
+                    <svg id="{{idInfo}}"
+                        class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                        <use xlink:href="icons/feather-sprite.svg#info" class="m-0" />
+                    </svg>
+                </span>
+                <h3 class="font-title">
+                    {{subtitle}}
+                </h3>
+            </div>
+            <form class="flex flex-col space-y-4 ">
+
+                <input class="color-light-bg px-3 py-2" type="text" id="title" name="title" placeholder="Title">
+                <textarea name="description" id="description" cols="30" rows="10" class="color-light-bg px-2 py-1"
+                    placeholder="Description"></textarea>
+                <input class="color-light-bg px-3 py-2" type="text" id="webpage" name="webpage"
+                    placeholder="Webpage Link">
+                <input class="color-light-bg px-3 py-2" type="text" id="github" name="github" placeholder="Github Link">
+                <input class="color-light-bg px-3 py-2" type="text" id="figma" name="figma" placeholder="Figma Link">
+                {{#if addMainElement}}
+                <input class="color-light-bg px-3 py-2" type="file" accept="image/*" id="figma" name="figma" placeholder="Figma Link">
+                {{/if}}
+                <div class="flex flex-row space-x-4 items-center">
+                    <input class="color-light-bg px-3 py-2 flex-1" type="text" id="figma" name="figma"
+                        placeholder="Technologies used">
+                    <button class="font-title" type="button">
+                        <svg id=""
+                            class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                            <use xlink:href="icons/feather-sprite.svg#plus-circle" class="m-0" />
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="btn-square-rounded"> Add</button>
+            </form>
+        </div>
+    </div>
+</div>

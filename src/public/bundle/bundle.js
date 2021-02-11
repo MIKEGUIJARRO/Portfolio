@@ -5392,8 +5392,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   content: 'Private University #1 in Mexico',
   followCursor: true
 }, _defineProperty(_tippy, "followCursor", 'horizontal'), _defineProperty(_tippy, "plugins", [_tippy2.followCursor]), _defineProperty(_tippy, "animateFill", true), _tippy));
-(0, _tippy2.default)('#info', {
-  content: 'More relevant projects with descriptive images of the project done.',
+(0, _tippy2.default)('#info-main', {
+  content: 'More relevant projects with an image of each project.',
+  animateFill: true,
+  allowHTML: true
+});
+(0, _tippy2.default)('#info-others', {
+  content: 'Normal projects without an image of each project.',
   animateFill: true,
   allowHTML: true
 });

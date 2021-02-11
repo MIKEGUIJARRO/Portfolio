@@ -13,12 +13,13 @@
         <li><a href="#work" class="grayscale-title">Work</a></li>
         <li><a href="#contact" class="grayscale-title">Contact</a></li>
     </ul>
-    {{else if dashboard}}
+    {{else if dashboardNav}}
     <ul class="flex flex-row space-x-8">
         <li><a href="/" class="btn-main">Home</a></li>
+        <li><a href="/dashboard" class="btn-main-outline">Dashboard</a></li>
     </ul>
     <ul class="flex flex-row space-x-8">
-        <li><a href="#" class="grayscale-title">Logout</a></li>
+        <li><a href="#" class="btn-main-outline">Logout</a></li>
     </ul>
     {{else if navError}}
     <ul class="flex flex-row space-x-8">

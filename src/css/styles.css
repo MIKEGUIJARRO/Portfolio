@@ -29,24 +29,44 @@
 }
 
 @layer components {
-    /* Grayscale */
-    .grayscale-title {
+    /* Grayscale colors */
+    /* Font colors */
+    .font-title {
         @apply text-gray-900;
     }
-    .grayscale-body {
+    .font-body {
         @apply text-gray-600;
     }
-    .grayscale-label {
+    .font-label {
         @apply text-gray-400;
     }
-    .grayscale-line {
+    .font-line {
         @apply text-gray-300;
     }
-    .grayscale-ligh-bg {
+    .font-light-bg {
         @apply text-gray-200;
     }
-    .grayscale-off-white {
+    .font-off-white {
         @apply text-white;
+    }
+    /* Background color */
+    .color-title {
+        @apply bg-gray-900;
+    }
+    .color-body {
+        @apply bg-gray-600;
+    }
+    .color-label {
+        @apply bg-gray-400;
+    }
+    .color-line {
+        @apply bg-gray-300;
+    }
+    .color-light-bg {
+        @apply bg-gray-200;
+    }
+    .color-off-white {
+        @apply bg-white;
     }
     /* Layout */
     .section-block {
@@ -63,10 +83,13 @@
         @apply text-xs font-bold p-5 bg-gray-700 text-white rounded-full px-4 py-1 mt-2 mr-2 transition duration-150 ease-in-out transform hover:scale-105 hover:bg-gray-900 select-none;
     }
     .btn-main {
-        @apply bg-gray-800 grayscale-off-white px-6 py-2 rounded-full hover:bg-gray-900 transition;
+        @apply border border-gray-800 bg-gray-800 font-off-white px-6 py-2 rounded-full hover:bg-gray-900 hover:border-gray-900 transition;
+    }
+    .btn-main-outline {
+        @apply bg-white border-gray-200 border font-title px-6 py-2 rounded-full hover:bg-gray-800 hover:text-white transition hover:border-gray-800;
     }
     .btn-square-rounded {
-        @apply border px-3 py-1 border-gray-900 rounded grayscale-title hover:bg-gray-900 hover:text-white transition;
+        @apply box-border border px-3 py-1 border-gray-900 rounded font-title hover:bg-gray-900 hover:text-white transition;
     }
     .btn-blue {
         @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
