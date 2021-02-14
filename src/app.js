@@ -1,7 +1,9 @@
 const express = require("express"),
     exphbs = require("express-handlebars"),
     bodyparser = require("body-parser"),
-    morgan = require("morgan");
+    morgan = require("morgan"),
+    multer = require("multer");
+
 
 const path = require("path");
 const rootDir = require("./lib/path");
@@ -12,6 +14,12 @@ const app = express();
 const { initializeFirebaseApp } = require("./database");
 initializeFirebaseApp();
 
+const storage = multer.diskStorage({
+    destination: path.join(rootDir, "uploads"),
+    filename: (req, file, callback)=> {
+        callback(null, new Date().getTime() + path.extname(file.originalname));
+    }
+});
 
 //Settings
 app.set("port", process.env.PORT || 5000);
@@ -33,10 +41,10 @@ app.engine(
 app.set("view engine", ".hbs");
 
 //Midlewares
-
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
+app.use(multer({storage: storage}).single("image"));
 
 //Public
 app.use(express.static(path.join(rootDir, "public")));

@@ -48,7 +48,7 @@ router.get("/add-element", (req, res) => {
 });
 
 router.post("/add-element", async (req, res) => {
-    const data = await req.body;
+    const data = req.body;
     console.log(data);
     res.redirect("/dashboard");
 });

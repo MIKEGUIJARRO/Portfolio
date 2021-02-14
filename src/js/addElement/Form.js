@@ -1,5 +1,6 @@
 import Chips from "./Chips";
 import 'babel-polyfill';
+import { json } from "body-parser";
 
 class Form {
     titleInput;
@@ -56,25 +57,19 @@ class Form {
         if (this.documentInput && !this.documentInput.validity.valid) {
             return;
         }
-        const formData = new FormData();
+        let formData = new FormData();
         const URL = "/add-element";
         const values = this.getInputValues();
         for (const data in values) {
             console.log(`${data} / ${values[data]}`)
             formData.append(data, values[data]);
         }
-        formData.append("hola", "mundo");
+        console.log(formData);
         const response = await fetch(URL, {
-            mode: "no-cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "form-data"
-            },
-            method: "POST", 
-            body: formData
+            body: formData,
+            method: "POST",
         });
-        console.log(response);
+        window.location.replace(response.url);
     }
 
 
@@ -104,7 +99,7 @@ class Form {
         ];
 
         if (this.documentInput && this.documentInput.files[0]) {
-            data["file"] = this.documentInput.files[0];
+            data["image"] = this.documentInput.files[0];
         }
         if (this.chips.getChipsValues().length !== 0) {
             data["technologies"] = this.chips.getChipsValues();
