@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/styles.css" rel="stylesheet">
-    <link href="/bundle/bundle.css" rel="stylesheet">
+    <link href="/main/bundle.css" rel="stylesheet">
     <title>{{title}}</title>
 </head>
 
@@ -24,7 +24,13 @@
     </div>
     {{!-- Footer --}}
     {{> footer}}
-    <script src="/bundle/bundle.js"></script>
+    {{#if loadMain}}
+    <script src="/main/bundle.js"></script>
+    {{/if}}
+    {{#if loadAddElement}}
+    <script src="/addElement/bundle.js"></script>
+    {{/if}}
+
 
 </body>
 
