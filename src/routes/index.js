@@ -1,6 +1,7 @@
 const express = require("express");
 const app = require("../app");
 const router = express.Router();
+const { deleteLocalFile } = require("../lib/util");
 
 //DB and storage requirements
 const { projects: projectsDB } = require("../database/database");
@@ -52,28 +53,29 @@ router.get("/add-project", (req, res) => {
 });
 
 router.post("/add-main-project", async (req, res) => {
-    const data = req.body;
-    const filename = req.file.filename;
-    const filepath = req.file.path;
-    const resStorage = await projectsStorage.uploadFile(filepath);
-    const imageURL = resStorage[0].publicUrl();
-    const imageId = resStorage[0].id;
-    const project = {
-        "title": data.title,
-        "description": data.description,
-        "webpage": data.webpage ? data.webpage : null,
-        "github": data.github ? data.github : null,
-        "figma:": data.figma ? data.figma : null,
-        "technologies": data.technologies ? data.technologies : null,
-        "image": {
-            "url": imageURL,
-            "id": imageId
+    try {
+        const data = req.body;
+        const filepath = req.file.path;
+        const resStorage = await projectsStorage.uploadFile(filepath);
+        const imageURL = resStorage[0].publicUrl();
+        const imageId = resStorage[0].id;
+        const project = {
+            "title": data.title,
+            "description": data.description,
+            "webpage": data.webpage ? data.webpage : null,
+            "github": data.github ? data.github : null,
+            "figma:": data.figma ? data.figma : null,
+            "technologies": data.technologies ? data.technologies : null,
+            "image": {
+                "url": imageURL,
+                "id": imageId,
+            }
         }
+        await deleteLocalFile(filepath);
+        await projectsDB.addMainProject(project);
+    } catch (e) {
+        console.log(e);
     }
-    console.log("----------------------------------")
-    console.log(resStorage[0].publicUrl());
-
-    await projectsDB.addMainProject(project);
     res.redirect("/dashboard");
 });
 
