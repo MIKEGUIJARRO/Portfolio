@@ -29,8 +29,13 @@ const projects = {
         });
     },
 
-    getProjects: async () => {
-        const response = await projectsRef.once("value");
+    getMainProjects: async () => {
+        const response = await projectsRef.child("main").once("value");
+        return response.val();
+    },
+
+    getOthersProjects: async () => {
+        const response = await projectsRef.child("others").once("value");
         return response.val();
     },
 

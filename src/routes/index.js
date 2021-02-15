@@ -22,9 +22,12 @@ router.get("/", (req, res) => {
 
 //Dashboard configuration
 router.get("/dashboard", async (req, res) => {
-    const response = await projectsDB.getProjects();
-    console.log(response);
-    res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true });
+    const resMainProjects = await projectsDB.getMainProjects();
+    const resOtherProjects = await projectsDB.getOthersProjects();
+    console.log(resMainProjects);
+    console.log("-------------------------------------")
+    console.log(resOtherProjects);
+    res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true, resMainProjects, resOtherProjects });
 });
 
 //Add elements
