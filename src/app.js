@@ -10,9 +10,9 @@ const rootDir = require("./lib/path");
 
 
 //Initialization
-const app = express();
-const { initializeFirebaseApp } = require("./database");
+const { initializeFirebaseApp } = require("./firebase");
 initializeFirebaseApp();
+const app = express();
 
 const storage = multer.diskStorage({
     destination: path.join(rootDir, "uploads"),

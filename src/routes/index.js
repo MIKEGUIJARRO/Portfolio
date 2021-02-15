@@ -1,8 +1,9 @@
 const express = require("express");
 const app = require("../app");
 const router = express.Router();
-const { db } = require("../database");
 
+//DB requirements
+const { projects } = require("../database/database");
 
 //Main routes of the app
 router.get("/", (req, res) => {
@@ -18,7 +19,9 @@ router.get("/", (req, res) => {
 });
 
 //Dashboard configuration
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
+    const response = await projects.getProjects();
+    console.log(response);
     res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true });
 });
 
@@ -50,6 +53,14 @@ router.get("/add-element", (req, res) => {
 router.post("/add-element", async (req, res) => {
     const data = req.body;
     console.log(data);
+    const project = {
+        "title": data.title,
+        "description": data.description,
+        "webpage": data.webpage,
+        "github": data.github,
+        "figma:": data.figma,
+    }
+    await projects.addProjectElement(project);
     res.redirect("/dashboard");
 });
 
