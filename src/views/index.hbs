@@ -4,7 +4,8 @@
         <img src="/images/profilePic.png" alt="" class="rounded-full max-w-full max-h-auto bg-cover">
     </div>
     <h2 class="font-title text-center font-body"><span class="wave select-none">👋</span> Hola, My name is Mike</h2>
-    <h1 class="font-title text-center font-title">I’m a Software Developer with 2+ years experience designing and building digital products
+    <h1 class="font-title text-center font-title">I’m a Software Developer with 2+ years experience designing and
+        building digital products
     </h1>
     <p class="text-center">I am a biligual software engineer (Spanish / English) based in Machias, ME
         specializing in building and designing
@@ -107,9 +108,9 @@
 
 <div class="section-block-lg pt-32" id="work">
     <h3 class="grayscale-title">The work I do and the projects I have done</h3>
-    {{>cardImage}}
-    {{>cardImage}}
-    {{>cardImage}}
+    {{#each resMainProjects}}
+    {{>cardImage this}}
+    {{/each}}
 </div>
 
 {{!-- Other projects --}}
@@ -125,7 +126,8 @@
 {{!-- Get in touch --}}
 <div class="section-block-lg pt-32" id="contact">
     <h3 class="grayscale-title">Get in touch!</h3>
-    <p class="text-center">I am currently looking for a new job opportunity. I am a driven learner focused on getting the
+    <p class="text-center">I am currently looking for a new job opportunity. I am a driven learner focused on getting
+        the
         best results in my work and always deliver extra value. If you like my work / profile send me a
         message, my inbox is always open to connect with new people, talk about technology and business topics.</p>
     <a href="mailto: a01612042@itesm.mx" class="btn-main">Connect with me</a>
