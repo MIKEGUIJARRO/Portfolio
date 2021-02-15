@@ -58,7 +58,7 @@ class Form {
             return;
         }
         let formData = new FormData();
-        const URL = "/add-element";
+        const URL = this.documentInput ? "/add-main-project": "/add-other-project";
         const values = this.getInputValues();
         for (const data in values) {
             console.log(`${data} / ${values[data]}`)

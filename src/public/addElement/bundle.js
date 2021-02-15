@@ -38643,7 +38643,7 @@ var Form = /*#__PURE__*/function () {
 
               case 4:
                 formData = new FormData();
-                URL = "/add-element";
+                URL = this.documentInput ? "/add-main-project" : "/add-other-project";
                 values = this.getInputValues();
 
                 for (data in values) {

@@ -2,8 +2,9 @@ const express = require("express");
 const app = require("../app");
 const router = express.Router();
 
-//DB requirements
-const { projects } = require("../database/database");
+//DB and storage requirements
+const { projects: projectsDB } = require("../database/database");
+const { projects: projectsStorage } = require("../storage/storage");
 
 //Main routes of the app
 router.get("/", (req, res) => {
@@ -20,14 +21,14 @@ router.get("/", (req, res) => {
 
 //Dashboard configuration
 router.get("/dashboard", async (req, res) => {
-    const response = await projects.getProjects();
+    const response = await projectsDB.getProjects();
     console.log(response);
     res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true });
 });
 
 //Add elements
-router.get("/add-main-element", (req, res) => {
-    res.render("addElement", {
+router.get("/add-main-project", (req, res) => {
+    res.render("addProject", {
         title: "Add Element",
         addMainElement: true,
         dashboardNav: true,
@@ -38,8 +39,8 @@ router.get("/add-main-element", (req, res) => {
     });
 });
 
-router.get("/add-element", (req, res) => {
-    res.render("addElement", {
+router.get("/add-project", (req, res) => {
+    res.render("addProject", {
         title: "Add Element",
         addElement: true,
         dashboardNav: true,
@@ -50,19 +51,45 @@ router.get("/add-element", (req, res) => {
     });
 });
 
-router.post("/add-element", async (req, res) => {
+router.post("/add-main-project", async (req, res) => {
+    const data = req.body;
+    const filename = req.file.filename;
+    const filepath = req.file.path;
+    const resStorage = await projectsStorage.uploadFile(filepath);
+    const imageURL = resStorage[0].publicUrl();
+    const imageId = resStorage[0].id;
+    const project = {
+        "title": data.title,
+        "description": data.description,
+        "webpage": data.webpage ? data.webpage : null,
+        "github": data.github ? data.github : null,
+        "figma:": data.figma ? data.figma : null,
+        "technologies": data.technologies ? data.technologies : null,
+        "image": {
+            "url": imageURL,
+            "id": imageId
+        }
+    }
+    console.log("----------------------------------")
+    console.log(resStorage[0].publicUrl());
+
+    await projectsDB.addMainProject(project);
+    res.redirect("/dashboard");
+});
+
+router.post("/add-other-project", async (req, res) => {
     const data = req.body;
     console.log(data);
     const project = {
         "title": data.title,
         "description": data.description,
-        "webpage": data.webpage,
-        "github": data.github,
-        "figma:": data.figma,
+        "webpage": data.webpage ? data.webpage : null,
+        "github": data.github ? data.github : null,
+        "figma:": data.figma ? data.figma : null,
+        "technologies": data.technologies ? data.technologies : null,
     }
-    await projects.addProjectElement(project);
+    await projectsDB.addOtherProject(project);
     res.redirect("/dashboard");
 });
-
 
 module.exports = router;

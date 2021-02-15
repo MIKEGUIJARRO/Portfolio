@@ -9,7 +9,8 @@ const SERVICEACCOUNT = require("../personal-portfolio-48e6c-firebase-adminsdk-tp
 const initializeFirebaseApp = () => {
     admin.initializeApp({
         credential: admin.credential.cert(SERVICEACCOUNT),
-        databaseURL: process.env.DATABASEURL,
+        databaseURL: process.env.DATABASE_URL,
+        storageBucket: process.env.STORAGE_URL,
     });
 }
 

@@ -10,8 +10,8 @@ const projectsRef = ref.child("projects");
 
 const projects = {
     //https://firebase.google.com/docs/database/admin/save-data
-    addProjectElement: async (project) => {
-        await projectsRef.push().set(project, (error) => {
+    addMainProject: async (project) => {
+        await projectsRef.child("main").push().set(project, (error) => {
             if (error) {
                 console.log("Data could not be saved." + error);
             } else {
@@ -19,10 +19,23 @@ const projects = {
             }
         });
     },
-    getProjects: async () => {
+    addOtherProject: async (project) => {
+        await projectsRef.child("others").push().set(project, (error) => {
+            if (error) {
+                console.log("Data could not be saved." + error);
+            } else {
+                console.log("Data saved successfully.");
+            }
+        });
+    },
 
+    getProjects: async () => {
         const response = await projectsRef.once("value");
         return response.val();
+    },
+
+    deleteProject: async (id)=> {
+        //Implement null on it
     }
 }
 
