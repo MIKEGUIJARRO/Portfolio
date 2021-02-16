@@ -1,10 +1,10 @@
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+{{!-- max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl --}}
+<div class="bg-white rounded-xl shadow-md overflow-hidden w-full max-w-md md:max-w-lg">
     <div class="md:flex">
         <div class="md:flex-shrink-0">
-            <img class="h-full w-full object-cover md:w-48" src="/images/profilePic.png"
-                alt="Man looking at item at a store">
+            <img class="h-full w-full object-cover md:w-48" src="{{image.url}}" alt="{{description}}">
         </div>
-        <div class="p-8">
+        <div class="p-8 w-full">
             <div class="flex justify-between">
                 <div class="flex flex-row items-center">
                     <span class="mr-2">
@@ -13,27 +13,32 @@
                         </svg>
                     </span>
                     <h4 class="grayscale-title">
-                        Integrame Down
+                        {{title}}
                     </h4>
                 </div>
                 <div class="flex flex-row items-center space-x-4">
-                    {{#if home}}
-                    <a href="#">
+                    {{#if figma}}
+                    <a href="{{figma}}" target="_blank">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#figma" class="m-0" />
                         </svg>
                     </a>
-                    <a href="#">
+                    {{/if}}
+                    {{#if github}}
+                    <a href="{{github}}" target="_blank">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#github" class="m-0" />
                         </svg>
                     </a>
-                    <a href="#">
+                    {{/if}}
+                    {{#if webpage}}
+                    <a href="{{webpage}}" target="_blank">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#external-link" class="m-0" />
                         </svg>
                     </a>
-                    {{else if dashboard}}
+                    {{/if}}
+                    {{#if dashboard}}
                     <a href="#">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#edit" class="m-0" />
@@ -45,16 +50,14 @@
                         </svg>
                     </a>
                     {{/if}}
-
                 </div>
             </div>
-            <p class="mt-2">Getting a new business off the ground is a lot of hard work. Here are five
-                ideas you can use to find your first customers.</p>
+            <p class="mt-2">{{description}}</p>
             <ul class="flex flex-wrap mt-2">
-                <li class="chip">Node Js</li>
-                <li class="chip">MongoDB</li>
-                <li class="chip">Hbs</li>
-                <li class="chip">Css</li>
+                {{#each technologies}}
+                <li class="chip">{{this}}</li>
+                {{/each}}
+
             </ul>
         </div>
     </div>

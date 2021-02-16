@@ -12,17 +12,19 @@
                 </h4>
             </div>
             <div class="flex flex-row items-center space-x-4 ml-2">
-                {{#if home}}
+                {{#if figma}}
                 <a href="#">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#figma" class="m-0" />
                     </svg>
                 </a>
+                {{else if github}}
                 <a href="#">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#github" class="m-0" />
                     </svg>
                 </a>
+                {{else if webpage}}
                 <a href="#">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#external-link" class="m-0" />

@@ -10,7 +10,11 @@ const { projects: projectsDB } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
 
 //Main routes of the app
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+    const resMainProjects = await projectsDB.getMainProjects();
+    const resOtherProjects = await projectsDB.getOthersProjects();
+    console.log(resMainProjects);
+    
     //Pass a local variable to the view index: true
     res.render("index", {
         title: "Mike Guijarro",
@@ -18,7 +22,9 @@ router.get("/", (req, res) => {
         navUser: true,
         loadMain: true,
         footer: true,
-        loadMain: true
+        loadMain: true,
+        resMainProjects,
+        resOtherProjects,
     });
 });
 
@@ -68,7 +74,7 @@ router.post("/add-main-project", async (req, res) => {
             "description": data.description,
             "webpage": data.webpage ? data.webpage : null,
             "github": data.github ? data.github : null,
-            "figma:": data.figma ? data.figma : null,
+            "figma": data.figma ? data.figma : null,
             "technologies": data.technologies ? JSON.parse(data.technologies) : null,
             "image": {
                 "url": imageURL,
