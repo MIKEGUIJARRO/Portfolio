@@ -5,8 +5,9 @@ const { deleteLocalFile } = require("../lib/util");
 
 
 //DB and storage requirements
-const { projects: projectsDB } = require("../database/database");
+const { projects: projectsDB, projects } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
+const { route } = require("../app");
 
 //Restful routes 
 //https://miro.medium.com/max/2628/1*M0hdLsgbzelOFuq-1BVH-g.png
@@ -186,5 +187,18 @@ router.post("/edit-other-project/:id", async (req, res) => {
     await projectsDB.updateOtherProject(id, project);
     res.redirect("/dashboard");
 });
+
+router.get("/delete-main-project/:id", async (req, res)=>{
+    const id = req.params.id;
+    await projectsDB.deleteMainProject(id);
+    res.redirect("/dashboard");
+});
+
+router.get("/delete-other-project/:id", async (req, res)=>{
+    const id = req.params.id;
+    await projectsDB.deleteOtherProject(id);
+    res.redirect("/dashboard");
+});
+
 
 module.exports = router;

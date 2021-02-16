@@ -74,8 +74,24 @@ const projects = {
         });
     },
 
-    deleteProject: async (id) => {
-        //Implement null on it
+    deleteMainProject: async (id) => {
+        const response = await projectsRef.child("main").child(id).set(null, (error) => {
+            if (error) {
+                console.log("Data could not be deleted." + error);
+            } else {
+                console.log("Data deleted successfully.");
+            }
+        });
+    },
+
+    deleteOtherProject: async (id) => {
+        const response = await projectsRef.child("others").child(id).set(null, (error) => {
+            if (error) {
+                console.log("Data could not be deleted." + error);
+            } else {
+                console.log("Data deleted successfully.");
+            }
+        });
     },
 }
 
