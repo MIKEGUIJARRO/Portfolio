@@ -60,7 +60,6 @@ class Form {
         let formData = new FormData();
         const URL = this.documentInput ? "/add-main-project": "/add-other-project";
         const values = this.getInputValues();
-        console.log(values);
         for (const data in values) {
             formData.append(data, values[data]);
         }

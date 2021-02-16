@@ -42,7 +42,7 @@
             <h4 class="mb-2 grayscale-title">Development</h4>
             <ul class="flex flex-col space-y-2  ">
                 <li><span class="font-semibold">Frontend:</span> HTML / CSS / JS / React (Currently learning)</li>
-                <li><span class="font-semibold">Backend:</span> Node.js / MongoDB / MySQL </li>
+                <li><span class="font-semibold">Backend:</span> Node.js / MongoDB / MySQL / Firebase</li>
                 <li><span class="font-semibold">Mobile:</span> Dart / Flutter </li>
                 <li><span class="font-semibold">General purpose:</span> C++ / Java </li>
                 <li><span class="font-semibold">Extra:</span> Puppeter / Ejs / Hbs / Tailwind / Bootstrap</li>
@@ -120,9 +120,10 @@
 <div class="section-block-lg pt-32">
     <h3 class="grayscale-title">Other Noteworthy Projects</h3>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-        {{>card}}
-        {{>card}}
-        {{>card}}
+        {{#each resOtherProjects}}
+        {{>card this}}
+        {{/each}}
+
     </div>
 </div>
 

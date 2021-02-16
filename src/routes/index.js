@@ -13,8 +13,6 @@ const { projects: projectsStorage } = require("../storage/storage");
 router.get("/", async (req, res) => {
     const resMainProjects = await projectsDB.getMainProjects();
     const resOtherProjects = await projectsDB.getOthersProjects();
-    console.log(resMainProjects);
-    
     //Pass a local variable to the view index: true
     res.render("index", {
         title: "Mike Guijarro",
@@ -61,8 +59,6 @@ router.get("/add-project", (req, res) => {
 });
 
 router.post("/add-main-project", async (req, res) => {
-    console.log(colors.green("Body"));
-    console.log(req.body);
     try {
         const data = req.body;
         const filepath = req.file.path;
@@ -91,13 +87,12 @@ router.post("/add-main-project", async (req, res) => {
 
 router.post("/add-other-project", async (req, res) => {
     const data = req.body;
-    console.log(data);
     const project = {
         "title": data.title,
         "description": data.description,
         "webpage": data.webpage ? data.webpage : null,
         "github": data.github ? data.github : null,
-        "figma:": data.figma ? data.figma : null,
+        "figma": data.figma ? data.figma : null,
         "technologies": data.technologies ? JSON.parse(data.technologies) : null,
     }
     await projectsDB.addOtherProject(project);

@@ -9,7 +9,7 @@ const projects = {
             const response = await bucket.upload(path, { public: true});
             return response;
         } catch (e) {
-            console.log("Error uploading file: ", e);
+            log("Error uploading file: ", e);
         }
     }
 };
