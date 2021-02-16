@@ -2,6 +2,8 @@ const express = require("express");
 const app = require("../app");
 const router = express.Router();
 const { deleteLocalFile } = require("../lib/util");
+let colors = require('colors');
+
 
 //DB and storage requirements
 const { projects: projectsDB } = require("../database/database");
@@ -24,9 +26,6 @@ router.get("/", (req, res) => {
 router.get("/dashboard", async (req, res) => {
     const resMainProjects = await projectsDB.getMainProjects();
     const resOtherProjects = await projectsDB.getOthersProjects();
-    console.log(resMainProjects);
-    console.log("-------------------------------------")
-    console.log(resOtherProjects);
     res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true, resMainProjects, resOtherProjects });
 });
 
@@ -56,6 +55,8 @@ router.get("/add-project", (req, res) => {
 });
 
 router.post("/add-main-project", async (req, res) => {
+    console.log(colors.green("Body"));
+    console.log(req.body);
     try {
         const data = req.body;
         const filepath = req.file.path;
@@ -68,7 +69,7 @@ router.post("/add-main-project", async (req, res) => {
             "webpage": data.webpage ? data.webpage : null,
             "github": data.github ? data.github : null,
             "figma:": data.figma ? data.figma : null,
-            "technologies": data.technologies ? data.technologies : null,
+            "technologies": data.technologies ? JSON.parse(data.technologies) : null,
             "image": {
                 "url": imageURL,
                 "id": imageId,
@@ -91,7 +92,7 @@ router.post("/add-other-project", async (req, res) => {
         "webpage": data.webpage ? data.webpage : null,
         "github": data.github ? data.github : null,
         "figma:": data.figma ? data.figma : null,
-        "technologies": data.technologies ? data.technologies : null,
+        "technologies": data.technologies ? JSON.parse(data.technologies) : null,
     }
     await projectsDB.addOtherProject(project);
     res.redirect("/dashboard");

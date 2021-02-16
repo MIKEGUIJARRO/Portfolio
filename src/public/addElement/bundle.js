@@ -38647,22 +38647,20 @@ var Form = /*#__PURE__*/function () {
                 values = this.getInputValues();
 
                 for (data in values) {
-                  console.log("".concat(data, " / ").concat(values[data]));
                   formData.append(data, values[data]);
                 }
 
-                console.log(formData);
-                _context.next = 11;
+                _context.next = 10;
                 return fetch(URL, {
                   body: formData,
                   method: "POST"
                 });
 
-              case 11:
+              case 10:
                 response = _context.sent;
                 window.location.replace(response.url);
 
-              case 13:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -38702,7 +38700,7 @@ var Form = /*#__PURE__*/function () {
       }
 
       if (this.chips.getChipsValues().length !== 0) {
-        data["technologies"] = this.chips.getChipsValues();
+        data["technologies"] = JSON.stringify(this.chips.getChipsValues());
       }
 
       for (var i = 0; i < inputTextElements.length; i++) {

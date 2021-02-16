@@ -61,10 +61,8 @@ class Form {
         const URL = this.documentInput ? "/add-main-project": "/add-other-project";
         const values = this.getInputValues();
         for (const data in values) {
-            console.log(`${data} / ${values[data]}`)
             formData.append(data, values[data]);
         }
-        console.log(formData);
         const response = await fetch(URL, {
             body: formData,
             method: "POST",
@@ -102,7 +100,7 @@ class Form {
             data["image"] = this.documentInput.files[0];
         }
         if (this.chips.getChipsValues().length !== 0) {
-            data["technologies"] = this.chips.getChipsValues();
+            data["technologies"] = JSON.stringify(this.chips.getChipsValues());
         }
 
         for (let i = 0; i < inputTextElements.length; i++) {
