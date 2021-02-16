@@ -64,6 +64,16 @@ const projects = {
         });
     },
 
+    updateOtherProject: async (id, value) => {
+        const response = await projectsRef.child("others").child(id).update(value, (error) => {
+            if (error) {
+                console.log("Data could not be updated." + error);
+            } else {
+                console.log("Data updated successfully.");
+            }
+        });
+    },
+
     deleteProject: async (id) => {
         //Implement null on it
     },

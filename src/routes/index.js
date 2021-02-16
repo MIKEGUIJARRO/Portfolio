@@ -51,11 +51,12 @@ router.get("/add-main-project", (req, res) => {
         loadAddElement: true,
         loadMain: true,
         subtitle: "Main Projects & Work",
-        idInfo: "info-main"
+        idInfo: "info-main",
+        urlAction: "/add-main-project"
     });
 });
 
-router.get("/add-project", (req, res) => {
+router.get("/add-other-project", (req, res) => {
     res.render("addProject", {
         title: "Add Element",
         addElement: true,
@@ -63,7 +64,8 @@ router.get("/add-project", (req, res) => {
         loadAddElement: true,
         loadMain: true,
         subtitle: "Other Noteworthy Projects",
-        idInfo: "info-others"
+        idInfo: "info-others",
+        urlAction: "/add-other-project"
     });
 });
 
@@ -119,9 +121,25 @@ router.get("/edit-main-project/:id", async (req, res) => {
         dashboardNav: true,
         loadAddElement: true,
         loadMain: true,
-        subtitle: "Main Projects & Work",
+        subtitle: "Edit - Main Projects & Work",
         idInfo: "info-main",
-        project
+        project,
+        urlAction: `/edit-main-project/${id}`
+    });
+});
+
+router.get("/edit-other-project/:id", async (req, res) => {
+    const id = req.params.id;
+    const project = await projectsDB.getOtherProject(id);
+    res.render("editProject", {
+        title: "Add Element",
+        dashboardNav: true,
+        loadAddElement: true,
+        loadMain: true,
+        subtitle: "Edit - Other Noteworthy Projects",
+        idInfo: "info-main",
+        project,
+        urlAction: `/edit-other-project/${id}`
     });
 });
 
@@ -146,9 +164,26 @@ router.post("/edit-main-project/:id", async (req, res) => {
         project["image"] = {
             "url": imageURL,
             "id": imageId,
-        }
+        };
     }
     await projectsDB.updateMainProject(id, project);
+    res.redirect("/dashboard");
+});
+
+
+router.post("/edit-other-project/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    const project = {
+        "title": data.title,
+        "description": data.description,
+        "webpage": data.webpage ? data.webpage : null,
+        "github": data.github ? data.github : null,
+        "figma": data.figma ? data.figma : null,
+        "technologies": data.technologies ? JSON.parse(data.technologies) : null,
+    }
+    await projectsDB.updateOtherProject(id, project);
     res.redirect("/dashboard");
 });
 

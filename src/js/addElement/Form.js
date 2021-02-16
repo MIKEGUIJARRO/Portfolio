@@ -65,7 +65,6 @@ class Form {
         let formData = new FormData();
         //this.documentInput ? "/add-main-project" : "/add-other-project";
         const URL = document.querySelector("form").getAttribute("action");
-        console.log(URL);
         const values = this.getInputValues();
         for (const data in values) {
             formData.append(data, values[data]);
