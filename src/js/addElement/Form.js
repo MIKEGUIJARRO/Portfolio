@@ -39,6 +39,11 @@ class Form {
         //AddEventListeners
         this.addChipBtn.addEventListener("click", this.addChipHandler.bind(this));
         this.sendBtn.addEventListener("click", this.fetchHandler.bind(this), true);
+
+        //Check for any pre-send chips to the form
+        if (!this.chips.isEmpty()) {
+            this.chips.addInitialClickListeners();
+        }
     }
 
     addChipHandler() {
@@ -58,7 +63,9 @@ class Form {
             return;
         }
         let formData = new FormData();
-        const URL = this.documentInput ? "/add-main-project": "/add-other-project";
+        //this.documentInput ? "/add-main-project" : "/add-other-project";
+        const URL = document.querySelector("form").getAttribute("action");
+        console.log(URL);
         const values = this.getInputValues();
         for (const data in values) {
             formData.append(data, values[data]);

@@ -48,6 +48,7 @@ app.use(multer({storage: storage}).single("image"));
 
 //Public
 app.use(express.static(path.join(rootDir, "public")));
+app.use("/edit-main-project", express.static(path.join(rootDir, "public")));
 
 //Routes
 app.use(require("./routes/index"));

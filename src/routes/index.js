@@ -2,17 +2,25 @@ const express = require("express");
 const app = require("../app");
 const router = express.Router();
 const { deleteLocalFile } = require("../lib/util");
-let colors = require('colors');
 
 
 //DB and storage requirements
 const { projects: projectsDB } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
 
+//Restful routes 
+//https://miro.medium.com/max/2628/1*M0hdLsgbzelOFuq-1BVH-g.png
+
 //Main routes of the app
 router.get("/", async (req, res) => {
-    const resMainProjects = await projectsDB.getMainProjects();
-    const resOtherProjects = await projectsDB.getOthersProjects();
+    const resMainProjects = await projectsDB.getMainProjects(false);
+    const resOtherProjects = await projectsDB.getOthersProjects(false);
+    for (const project in resMainProjects) {
+        resMainProjects[project]["homePage"] = true;
+    }
+    for (const project in resOtherProjects) {
+        resOtherProjects[project]["homePage"] = true;
+    }
     //Pass a local variable to the view index: true
     res.render("index", {
         title: "Mike Guijarro",
@@ -30,10 +38,11 @@ router.get("/", async (req, res) => {
 router.get("/dashboard", async (req, res) => {
     const resMainProjects = await projectsDB.getMainProjects();
     const resOtherProjects = await projectsDB.getOthersProjects();
+
     res.render("dashboard", { title: "Dashboard", dashboard: true, dashboardNav: true, loadMain: true, resMainProjects, resOtherProjects });
 });
 
-//Add elements
+//Add pprojects
 router.get("/add-main-project", (req, res) => {
     res.render("addProject", {
         title: "Add Element",
@@ -61,6 +70,7 @@ router.get("/add-project", (req, res) => {
 router.post("/add-main-project", async (req, res) => {
     try {
         const data = req.body;
+        //The current file input is required for all the new main projects
         const filepath = req.file.path;
         const resStorage = await projectsStorage.uploadFile(filepath);
         const imageURL = resStorage[0].publicUrl();
@@ -96,6 +106,49 @@ router.post("/add-other-project", async (req, res) => {
         "technologies": data.technologies ? JSON.parse(data.technologies) : null,
     }
     await projectsDB.addOtherProject(project);
+    res.redirect("/dashboard");
+});
+
+//Edit projects
+router.get("/edit-main-project/:id", async (req, res) => {
+    const id = req.params.id;
+    const project = await projectsDB.getMainProject(id);
+    res.render("editProject", {
+        title: "Add Element",
+        addMainElement: true,
+        dashboardNav: true,
+        loadAddElement: true,
+        loadMain: true,
+        subtitle: "Main Projects & Work",
+        idInfo: "info-main",
+        project
+    });
+});
+
+router.post("/edit-main-project/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    const project = {
+        "title": data.title,
+        "description": data.description,
+        "webpage": data.webpage ? data.webpage : null,
+        "github": data.github ? data.github : null,
+        "figma": data.figma ? data.figma : null,
+        "technologies": data.technologies ? JSON.parse(data.technologies) : null,
+    }
+
+    if (req.file) {
+        const filepath = req.file.path;
+        const resStorage = await projectsStorage.uploadFile(filepath);
+        const imageURL = resStorage[0].publicUrl();
+        const imageId = resStorage[0].id;
+        project["image"] = {
+            "url": imageURL,
+            "id": imageId,
+        }
+    }
+    await projectsDB.updateMainProject(id, project);
     res.redirect("/dashboard");
 });
 

@@ -12,29 +12,30 @@
                 </h4>
             </div>
             <div class="flex flex-row items-center space-x-4 ml-2">
+                {{#if homePage}}
                 {{#if figma}}
-                <a href="{{figma}}">
+                <a href="{{figma}}" target="_blank">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#figma" class="m-0" />
                     </svg>
                 </a>
                 {{/if}}
                 {{#if github}}
-                <a href="{{github}}">
+                <a href="{{github}}" target="_blank">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#github" class="m-0" />
                     </svg>
                 </a>
                 {{/if}}
                 {{#if webpage}}
-                <a href="{{webpage}}">
+                <a href="{{webpage}}" target="_blank">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#external-link" class="m-0" />
                     </svg>
                 </a>
                 {{/if}}
-                {{#if dashboard}}
-                <a href="#">
+                {{else}}
+                <a href="project/{{id}}">
                     <svg class="feather w-6 h-6">
                         <use xlink:href="icons/feather-sprite.svg#edit" class="m-0" />
                     </svg>

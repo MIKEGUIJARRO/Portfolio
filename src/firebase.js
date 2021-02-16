@@ -1,5 +1,6 @@
 const admin = require("firebase-admin");
-const SERVICEACCOUNT = require("../personal-portfolio-48e6c-firebase-adminsdk-tpqrb-94ff73ced4.json");
+const path = require("path")
+const SERVICEACCOUNT = require(path.join("..", process.env.SERVICE_ACCOUNT));
 //https://www.youtube.com/watch?v=b6KJ7FSMifw&ab_channel=FaztCode
 
 //https://firebase.google.com/docs/admin/setup
@@ -14,4 +15,4 @@ const initializeFirebaseApp = () => {
     });
 }
 
-module.exports = { initializeFirebaseApp, admin};
+module.exports = { initializeFirebaseApp, admin };

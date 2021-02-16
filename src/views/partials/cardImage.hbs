@@ -17,6 +17,7 @@
                     </h4>
                 </div>
                 <div class="flex flex-row items-center space-x-4">
+                    {{#if homePage}}
                     {{#if figma}}
                     <a href="{{figma}}" target="_blank">
                         <svg class="feather w-6 h-6">
@@ -38,13 +39,13 @@
                         </svg>
                     </a>
                     {{/if}}
-                    {{#if dashboard}}
-                    <a href="#">
+                    {{else}}
+                    <a href="/edit-main-project/{{id}}">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#edit" class="m-0" />
                         </svg>
                     </a>
-                    <a href="#">
+                    <a href="/delete-main-project/{{id}}">
                         <svg class="feather w-6 h-6">
                             <use xlink:href="icons/feather-sprite.svg#trash-2" class="m-0" />
                         </svg>

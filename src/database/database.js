@@ -6,7 +6,7 @@ const db = admin.database();
 const ref = db.ref("/resume");
 const projectsRef = ref.child("projects");
 
-//
+
 
 const projects = {
     //https://firebase.google.com/docs/database/admin/save-data
@@ -19,6 +19,7 @@ const projects = {
             }
         });
     },
+
     addOtherProject: async (project) => {
         await projectsRef.child("others").push().set(project, (error) => {
             if (error) {
@@ -29,19 +30,57 @@ const projects = {
         });
     },
 
-    getMainProjects: async () => {
+    getMainProjects: async (isIdNested = true) => {
         const response = await projectsRef.child("main").once("value");
-        return response.val();
+        const resMainProjects = isIdNested ? nestIdArray(response.val()) : response.val();
+        return resMainProjects;
     },
 
-    getOthersProjects: async () => {
+    getOthersProjects: async (isIdNested = true) => {
         const response = await projectsRef.child("others").once("value");
-        return response.val();
+        const resOtherProjects = isIdNested ? nestIdArray(response.val()) : response.val();
+        return resOtherProjects;
     },
 
-    deleteProject: async (id)=> {
+    getMainProject: async (id, isIdNested = true) => {
+        const response = await projectsRef.child("main").child(id).once("value");
+        const resMainProject = isIdNested ? nestIdProp(response.val(), id) : response.val();
+        return resMainProject;
+    },
+
+    getOtherProject: async (id, isIdNested = true) => {
+        const response = await projectsRef.child("others").child(id).once("value");
+        const resOtherProject = isIdNested ? nestIdProp(response.val(), id) : response.val();
+        return resOtherProject;
+    },
+
+    updateMainProject: async (id, value) => {
+        const response = await projectsRef.child("main").child(id).update(value, (error) => {
+            if (error) {
+                console.log("Data could not be updated." + error);
+            } else {
+                console.log("Data updated successfully.");
+            }
+        });
+    },
+
+    deleteProject: async (id) => {
         //Implement null on it
+    },
+}
+
+//Util
+const nestIdArray = (projectsOriginal) => {
+    const projects = { ...projectsOriginal };
+    for (const project in projects) {
+        projects[project]["id"] = project;
     }
+    return projects;
+}
+const nestIdProp = (projectsOriginal, id) => {
+    const projects = { ...projectsOriginal };
+    projects["id"] = id;
+    return projects;
 }
 
 module.exports = { projects };

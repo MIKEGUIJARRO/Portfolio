@@ -135,13 +135,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Chip = /*#__PURE__*/function () {
   function Chip(text) {
+    var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
     _classCallCheck(this, Chip);
 
     _defineProperty(this, "chipElement", void 0);
 
-    var template = document.getElementById("template-chip");
-    this.chipElement = template.content.querySelector("li").cloneNode(true);
-    this.chipElement.textContent = text;
+    if (element === undefined) {
+      //Add a new chip from input value
+      var template = document.getElementById("template-chip");
+      this.chipElement = template.content.querySelector("li").cloneNode(true);
+      this.chipElement.textContent = text;
+    } else {
+      this.chipElement = element;
+    }
+
     this.chipElement.addEventListener("click", this.delete.bind(this));
   }
 
@@ -181,6 +189,20 @@ var Chips = /*#__PURE__*/function () {
         values.push(chipEl.textContent);
       });
       return values;
+    }
+  }, {
+    key: "isEmpty",
+    value: function isEmpty() {
+      var chips = this.containerElement.querySelectorAll("li");
+      return chips.length === 0 ? true : false;
+    }
+  }, {
+    key: "addInitialClickListeners",
+    value: function addInitialClickListeners() {
+      var chips = this.containerElement.querySelectorAll("li");
+      chips.forEach(function (chip) {
+        var newChip = new Chip(undefined, chip);
+      });
     }
   }]);
 
@@ -38604,7 +38626,11 @@ var Form = /*#__PURE__*/function () {
     this.sendBtn = document.getElementById(idSendForm); //AddEventListeners
 
     this.addChipBtn.addEventListener("click", this.addChipHandler.bind(this));
-    this.sendBtn.addEventListener("click", this.fetchHandler.bind(this), true);
+    this.sendBtn.addEventListener("click", this.fetchHandler.bind(this), true); //Check for any pre-send chips to the form
+
+    if (!this.chips.isEmpty()) {
+      this.chips.addInitialClickListeners();
+    }
   }
 
   _createClass(Form, [{
@@ -38642,10 +38668,11 @@ var Form = /*#__PURE__*/function () {
                 return _context.abrupt("return");
 
               case 4:
-                formData = new FormData();
-                URL = this.documentInput ? "/add-main-project" : "/add-other-project";
+                formData = new FormData(); //this.documentInput ? "/add-main-project" : "/add-other-project";
+
+                URL = document.querySelector("form").getAttribute("action");
+                console.log(URL);
                 values = this.getInputValues();
-                console.log(values);
 
                 for (data in values) {
                   formData.append(data, values[data]);
