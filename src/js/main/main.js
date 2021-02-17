@@ -38,3 +38,9 @@ tippy('#info-others', {
     animateFill: true,
     allowHTML: true
 });
+
+tippy('#info-resume', {
+    content: 'Update your last resume with a new one.',
+    animateFill: true,
+    allowHTML: true
+})

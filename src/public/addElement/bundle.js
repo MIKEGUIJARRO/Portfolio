@@ -38671,24 +38671,23 @@ var Form = /*#__PURE__*/function () {
                 formData = new FormData(); //this.documentInput ? "/add-main-project" : "/add-other-project";
 
                 URL = document.querySelector("form").getAttribute("action");
-                console.log(URL);
                 values = this.getInputValues();
 
                 for (data in values) {
                   formData.append(data, values[data]);
                 }
 
-                _context.next = 11;
+                _context.next = 10;
                 return fetch(URL, {
                   body: formData,
                   method: "POST"
                 });
 
-              case 11:
+              case 10:
                 response = _context.sent;
                 window.location.replace(response.url);
 
-              case 13:
+              case 12:
               case "end":
                 return _context.stop();
             }

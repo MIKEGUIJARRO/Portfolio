@@ -5,9 +5,8 @@ const { deleteLocalFile } = require("../lib/util");
 
 
 //DB and storage requirements
-const { projects: projectsDB, projects } = require("../database/database");
+const { projects: projectsDB, documents: documentsDB } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
-const { route } = require("../app");
 
 //Restful routes 
 //https://miro.medium.com/max/2628/1*M0hdLsgbzelOFuq-1BVH-g.png
@@ -16,12 +15,14 @@ const { route } = require("../app");
 router.get("/", async (req, res) => {
     const resMainProjects = await projectsDB.getMainProjects(false);
     const resOtherProjects = await projectsDB.getOthersProjects(false);
+    const resume = await documentsDB.getResume();
     for (const project in resMainProjects) {
         resMainProjects[project]["homePage"] = true;
     }
     for (const project in resOtherProjects) {
         resOtherProjects[project]["homePage"] = true;
     }
+    console.log(resume);
     //Pass a local variable to the view index: true
     res.render("index", {
         title: "Mike Guijarro",
@@ -32,6 +33,7 @@ router.get("/", async (req, res) => {
         loadMain: true,
         resMainProjects,
         resOtherProjects,
+        resume
     });
 });
 
@@ -74,7 +76,8 @@ router.post("/add-main-project", async (req, res) => {
     try {
         const data = req.body;
         //The current file input is required for all the new main projects
-        const filepath = req.file.path;
+        const imgFile = req.files["image"][0];
+        const filepath = imgFile.path;
         const resStorage = await projectsStorage.uploadFile(filepath);
         const imageURL = resStorage[0].publicUrl();
         const imageId = resStorage[0].id;
@@ -188,15 +191,44 @@ router.post("/edit-other-project/:id", async (req, res) => {
     res.redirect("/dashboard");
 });
 
-router.get("/delete-main-project/:id", async (req, res)=>{
+router.get("/delete-main-project/:id", async (req, res) => {
     const id = req.params.id;
     await projectsDB.deleteMainProject(id);
     res.redirect("/dashboard");
 });
 
-router.get("/delete-other-project/:id", async (req, res)=>{
+router.get("/delete-other-project/:id", async (req, res) => {
     const id = req.params.id;
     await projectsDB.deleteOtherProject(id);
+    res.redirect("/dashboard");
+});
+
+router.get("/add-resume", (req, res) => {
+    res.render("addDocument", {
+        title: "Personal Document",
+        dashboardNav: true,
+        subtitle: "Add a new resume",
+        idInfo: "info-resume",
+        urlAction: `/add-resume`
+    });
+});
+
+router.post("/add-resume", async (req, res) => {
+
+    if (req.files) {
+        const pdfFile = req.files["pdf"][0];
+        const filepath = pdfFile.path;
+        const resStorage = await projectsStorage.uploadFile(filepath);
+        const docURL = resStorage[0].publicUrl();
+        const docId = resStorage[0].id;
+
+        const resume = {
+            "url": docURL,
+            "id": docId,
+        };
+        documentsDB.addAndReplaceResume(resume);
+        await deleteLocalFile(filepath);
+    }
     res.redirect("/dashboard");
 });
 

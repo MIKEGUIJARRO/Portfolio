@@ -1,7 +1,8 @@
 <div class="flex justify-between py-8">
     {{#if navUser }}
     <ul class="flex flex-row space-x-4">
-        <li><a href="#" class="btn-square-rounded">Resume</a>
+        <p>Resume: {{url}}</p>
+        <li><a href="{{resume.url}}" target="_blank" class="btn-square-rounded">Resume</a>
         </li>
         <li><a href="#" class="btn-square-rounded">Transcript</a>
         </li>
@@ -15,7 +16,7 @@
     </ul>
     {{else if dashboardNav}}
     <ul class="flex flex-row space-x-8">
-        <li><a href="#" class="btn-square-rounded">Add Resume</a></li>
+        <li><a href="/add-resume" class="btn-square-rounded">Add Resume</a></li>
         <li><a href="#" class="btn-square-rounded">Add Transcript</a></li>
     </ul>
     <ul class="flex flex-row space-x-8">

@@ -5402,5 +5402,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   animateFill: true,
   allowHTML: true
 });
+(0, _tippy2.default)('#info-resume', {
+  content: 'Update your last resume with a new one.',
+  animateFill: true,
+  allowHTML: true
+});
 },{"tippy.js":"LTUt","tippy.js/dist/tippy.css":"oHVP"}]},{},["epB2"], null)
 //# sourceMappingURL=/bundle.js.map

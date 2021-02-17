@@ -5,6 +5,7 @@ const db = admin.database();
 //Db references
 const ref = db.ref("/resume");
 const projectsRef = ref.child("projects");
+const docsRef = ref.child("documents");
 
 
 
@@ -95,6 +96,24 @@ const projects = {
     },
 }
 
+const documents = {
+    addAndReplaceResume: async (value) => {
+        await docsRef.child("resume").set(value, (error) => {
+            if (error) {
+                console.log("Data could not be saved." + error);
+            } else {
+                console.log("Data saved successfully.");
+            }
+        });
+    },
+
+    getResume: async () => {
+        const response = await docsRef.child("resume").once("value");
+        return response.val();
+    }
+
+};
+
 //Util
 const nestIdArray = (projectsOriginal) => {
     const projects = { ...projectsOriginal };
@@ -109,4 +128,4 @@ const nestIdProp = (projectsOriginal, id) => {
     return projects;
 }
 
-module.exports = { projects };
+module.exports = { projects, documents };

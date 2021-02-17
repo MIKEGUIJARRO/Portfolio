@@ -1,0 +1,23 @@
+<div class="pt-32">
+    <h1 class="font-title">Add Document</h1>
+    <div class="section-block-sm">
+        <div class="section-block-lg">
+            <div class="pt-16 flex flex-row items-center">
+                <span class="mr-2">
+                    <svg id="{{idInfo}}"
+                        class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                        <use xlink:href="icons/feather-sprite.svg#info" class="m-0" />
+                    </svg>
+                </span>
+                <h3 class="font-title">
+                    {{subtitle}}
+                </h3>
+            </div>
+            <form class="flex flex-col space-y-4" id="form" action="{{urlAction}}" method="POST"
+                enctype="multipart/form-data">
+                <input class="color-light-bg px-3 py-2" type="file" accept="application/pdf" id="resume" name="pdf" required>
+                <button class="btn-square-rounded">Update</button>
+            </form>
+        </div>
+    </div>
+</div>

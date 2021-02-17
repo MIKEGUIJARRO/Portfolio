@@ -16,7 +16,7 @@ const app = express();
 
 const storage = multer.diskStorage({
     destination: path.join(rootDir, "uploads"),
-    filename: (req, file, callback)=> {
+    filename: (req, file, callback) => {
         callback(null, new Date().getTime() + path.extname(file.originalname));
     }
 });
@@ -44,7 +44,10 @@ app.set("view engine", ".hbs");
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use(multer({storage: storage}).single("image"));
+app.use(multer({ storage: storage }).fields([
+    { name: "image", maxCount: 1 },
+    { name: "pdf", maxCount: 1 }
+]));
 
 //Public
 app.use(express.static(path.join(rootDir, "public")));
@@ -56,8 +59,8 @@ app.use("/edit-other-project", express.static(path.join(rootDir, "public")));
 app.use(require("./routes/index"));
 
 //Page not found response
-app.use((req, res)=>{
-    res.status(404).render("404", {title: "Page not found", navError: "true"});
+app.use((req, res) => {
+    res.status(404).render("404", { title: "Page not found", navError: "true" });
 });
 
 
