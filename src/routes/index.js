@@ -7,7 +7,7 @@ const { deleteLocalFile } = require("../lib/util");
 //DB and storage requirements
 const { projects: projectsDB, documents: documentsDB } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
-const { route } = require("../app");
+
 
 //Restful routes 
 //https://miro.medium.com/max/2628/1*M0hdLsgbzelOFuq-1BVH-g.png
@@ -84,7 +84,7 @@ router.post("/add-main-project", async (req, res) => {
         const filepath = imgFile.path;
         const resStorage = await projectsStorage.uploadFile(filepath);
         const imageURL = resStorage[0].publicUrl();
-        const imageId = resStorage[0].id;
+        const imageName = resStorage[0].name;
         const project = {
             "title": data.title,
             "description": data.description,
@@ -94,7 +94,7 @@ router.post("/add-main-project", async (req, res) => {
             "technologies": data.technologies ? JSON.parse(data.technologies) : null,
             "image": {
                 "url": imageURL,
-                "id": imageId,
+                "filename": imageName,
             }
         }
         await deleteLocalFile(filepath);
@@ -122,7 +122,9 @@ router.post("/add-other-project", async (req, res) => {
 //Edit projects
 router.get("/edit-main-project/:id", async (req, res) => {
     const id = req.params.id;
+
     const project = await projectsDB.getMainProject(id);
+
     res.render("editProject", {
         title: "Add Element",
         addMainElement: true,
@@ -155,7 +157,7 @@ router.post("/edit-main-project/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
-    const project = {
+    const newProject = {
         "title": data.title,
         "description": data.description,
         "webpage": data.webpage ? data.webpage : null,
@@ -165,13 +167,18 @@ router.post("/edit-main-project/:id", async (req, res) => {
     }
 
     if (req.file) {
+        //Get
+        const project = await projectsDB.getMainProject(id);
+        //Delete
+        await projectsStorage.removeFile(project.image.fileName);
+        //Update
         const filepath = req.file.path;
         const resStorage = await projectsStorage.uploadFile(filepath);
         const imageURL = resStorage[0].publicUrl();
-        const imageId = resStorage[0].id;
-        project["image"] = {
+        const imageName = resStorage[0].name;
+        newProject["image"] = {
             "url": imageURL,
-            "id": imageId,
+            "filename": imageName,
         };
     }
     await projectsDB.updateMainProject(id, project);
@@ -221,15 +228,21 @@ router.post("/add-resume", async (req, res) => {
     if (req.files) {
         const pdfFile = req.files["pdf"][0];
         const filepath = pdfFile.path;
+        //Get filename
+        const resume = await documentsDB.getResume();
+        if (resume !== null) {
+            //Delete from google store
+            await projectsStorage.removeFile(resume.filename);
+        }
+        //Upload new file
         const resStorage = await projectsStorage.uploadFile(filepath);
         const docURL = resStorage[0].publicUrl();
-        const docId = resStorage[0].id;
-
-        const resume = {
+        const docName = resStorage[0].name;
+        const newResume = {
             "url": docURL,
-            "id": docId,
+            "filename": docName,
         };
-        documentsDB.addAndReplaceResume(resume);
+        documentsDB.addAndReplaceResume(newResume);
         await deleteLocalFile(filepath);
     }
     res.redirect("/dashboard");
@@ -245,19 +258,26 @@ router.get("/add-transcript", (req, res) => {
     });
 });
 
-router.post("/add-transcript", async (req, res)=> {
+router.post("/add-transcript", async (req, res) => {
     if (req.files) {
         const pdfFile = req.files["pdf"][0];
         const filepath = pdfFile.path;
+        //Get filename
+        const transcript = await documentsDB.getTranscript();
+        if (transcript !== null) {
+            //Delete from google store
+            await projectsStorage.removeFile(transcript.filename);
+        }
+        //Upload new file
         const resStorage = await projectsStorage.uploadFile(filepath);
         const docURL = resStorage[0].publicUrl();
-        const docId = resStorage[0].id;
+        const docName = resStorage[0].name;
 
-        const resume = {
+        const newTranscript = {
             "url": docURL,
-            "id": docId,
+            "filename": docName,
         };
-        documentsDB.addAndReplaceTranscript(resume);
+        documentsDB.addAndReplaceTranscript(newTranscript);
         await deleteLocalFile(filepath);
     }
     res.redirect("/dashboard");
