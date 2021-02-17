@@ -5407,5 +5407,53 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   animateFill: true,
   allowHTML: true
 });
+(0, _tippy2.default)('#info-transcript', {
+  content: 'Update your last transcript with a new one.',
+  animateFill: true,
+  allowHTML: true
+});
+var subMenu = document.createElement("ul");
+var aboutEl = document.createElement("li");
+var experienceEl = document.createElement("li");
+var workEl = document.createElement("li");
+var contactEl = document.createElement("li");
+var aboutAnch = document.createElement("a");
+var experienceAnch = document.createElement("a");
+var workAnch = document.createElement("a");
+var contactAnch = document.createElement("a");
+aboutEl.appendChild(aboutAnch);
+experienceEl.appendChild(experienceAnch);
+workEl.appendChild(workAnch);
+contactEl.appendChild(contactAnch);
+aboutAnch.href = "#about";
+experienceAnch.href = "#experience";
+workAnch.href = "#work";
+contactAnch.href = "#contact";
+aboutAnch.classList.add("text-white");
+experienceAnch.classList.add("text-white");
+workAnch.classList.add("text-white");
+contactAnch.classList.add("text-white");
+aboutAnch.innerText = "About";
+experienceAnch.innerText = "Experience";
+workAnch.innerText = "Work";
+contactAnch.innerText = "Contact";
+aboutEl.classList.add("px-2", "py-2");
+experienceEl.classList.add("px-2", "py-2");
+workEl.classList.add("px-2", "py-2");
+contactEl.classList.add("px-2", "py-2");
+subMenu.classList.add("flex", "flex-col", "px-1", "divide-y", "divide-white", "divide-opacity-20");
+subMenu.appendChild(aboutEl);
+subMenu.appendChild(experienceEl);
+subMenu.appendChild(workEl);
+subMenu.appendChild(contactEl);
+console.log(subMenu);
+(0, _tippy2.default)('#main-menu', {
+  content: subMenu.outerHTML,
+  hideOnClick: "toggle",
+  trigger: "click",
+  interactive: true,
+  animateFill: true,
+  allowHTML: true
+});
 },{"tippy.js":"LTUt","tippy.js/dist/tippy.css":"oHVP"}]},{},["epB2"], null)
 //# sourceMappingURL=/bundle.js.map

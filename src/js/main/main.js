@@ -43,4 +43,64 @@ tippy('#info-resume', {
     content: 'Update your last resume with a new one.',
     animateFill: true,
     allowHTML: true
+});
+
+tippy('#info-transcript', {
+    content: 'Update your last transcript with a new one.',
+    animateFill: true,
+    allowHTML: true
+});
+
+const subMenu = document.createElement("ul");
+
+const aboutEl = document.createElement("li");
+const experienceEl = document.createElement("li");
+const workEl = document.createElement("li");
+const contactEl = document.createElement("li");
+
+const aboutAnch = document.createElement("a");
+const experienceAnch = document.createElement("a");
+const workAnch = document.createElement("a");
+const contactAnch = document.createElement("a");
+
+aboutEl.appendChild(aboutAnch);
+experienceEl.appendChild(experienceAnch);
+workEl.appendChild(workAnch);
+contactEl.appendChild(contactAnch);
+
+aboutAnch.href = "#about";
+experienceAnch.href = "#experience";
+workAnch.href = "#work";
+contactAnch.href = "#contact";
+
+aboutAnch.classList.add("text-white");
+experienceAnch.classList.add("text-white");
+workAnch.classList.add("text-white");
+contactAnch.classList.add("text-white");
+
+aboutAnch.innerText = "About";
+experienceAnch.innerText = "Experience";
+workAnch.innerText = "Work";
+contactAnch.innerText = "Contact";
+
+aboutEl.classList.add("px-2", "py-2")
+experienceEl.classList.add("px-2", "py-2")
+workEl.classList.add("px-2", "py-2")
+contactEl.classList.add("px-2", "py-2")
+
+subMenu.classList.add("flex", "flex-col", "px-1", "divide-y", "divide-white", "divide-opacity-20");
+subMenu.appendChild(aboutEl);
+subMenu.appendChild(experienceEl);
+subMenu.appendChild(workEl);
+subMenu.appendChild(contactEl);
+
+console.log(subMenu);
+
+tippy('#main-menu', {
+    content: subMenu.outerHTML,
+    hideOnClick: "toggle",
+    trigger: "click",
+    interactive: true,
+    animateFill: true,
+    allowHTML: true
 })

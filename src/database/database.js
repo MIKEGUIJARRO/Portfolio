@@ -110,6 +110,21 @@ const documents = {
     getResume: async () => {
         const response = await docsRef.child("resume").once("value");
         return response.val();
+    },
+
+    addAndReplaceTranscript: async (value) => {
+        await docsRef.child("transcript").set(value, (error) => {
+            if (error) {
+                console.log("Data could not be saved." + error);
+            } else {
+                console.log("Data saved successfully.");
+            }
+        });
+    },
+
+    getTranscript: async () => {
+        const response = await docsRef.child("transcript").once("value");
+        return response.val();
     }
 
 };

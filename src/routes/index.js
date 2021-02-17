@@ -7,6 +7,7 @@ const { deleteLocalFile } = require("../lib/util");
 //DB and storage requirements
 const { projects: projectsDB, documents: documentsDB } = require("../database/database");
 const { projects: projectsStorage } = require("../storage/storage");
+const { route } = require("../app");
 
 //Restful routes 
 //https://miro.medium.com/max/2628/1*M0hdLsgbzelOFuq-1BVH-g.png
@@ -16,6 +17,8 @@ router.get("/", async (req, res) => {
     const resMainProjects = await projectsDB.getMainProjects(false);
     const resOtherProjects = await projectsDB.getOthersProjects(false);
     const resume = await documentsDB.getResume();
+    const transcript = await documentsDB.getTranscript();
+
     for (const project in resMainProjects) {
         resMainProjects[project]["homePage"] = true;
     }
@@ -33,7 +36,8 @@ router.get("/", async (req, res) => {
         loadMain: true,
         resMainProjects,
         resOtherProjects,
-        resume
+        resume,
+        transcript,
     });
 });
 
@@ -205,7 +209,7 @@ router.get("/delete-other-project/:id", async (req, res) => {
 
 router.get("/add-resume", (req, res) => {
     res.render("addDocument", {
-        title: "Personal Document",
+        title: "Add resume",
         dashboardNav: true,
         subtitle: "Add a new resume",
         idInfo: "info-resume",
@@ -214,7 +218,6 @@ router.get("/add-resume", (req, res) => {
 });
 
 router.post("/add-resume", async (req, res) => {
-
     if (req.files) {
         const pdfFile = req.files["pdf"][0];
         const filepath = pdfFile.path;
@@ -232,5 +235,31 @@ router.post("/add-resume", async (req, res) => {
     res.redirect("/dashboard");
 });
 
+router.get("/add-transcript", (req, res) => {
+    res.render("addDocument", {
+        title: "Add transcript",
+        dashboardNav: true,
+        subtitle: "Add a new transcript",
+        idInfo: "info-transcript",
+        urlAction: `/add-transcript`
+    });
+});
 
+router.post("/add-transcript", async (req, res)=> {
+    if (req.files) {
+        const pdfFile = req.files["pdf"][0];
+        const filepath = pdfFile.path;
+        const resStorage = await projectsStorage.uploadFile(filepath);
+        const docURL = resStorage[0].publicUrl();
+        const docId = resStorage[0].id;
+
+        const resume = {
+            "url": docURL,
+            "id": docId,
+        };
+        documentsDB.addAndReplaceTranscript(resume);
+        await deleteLocalFile(filepath);
+    }
+    res.redirect("/dashboard");
+});
 module.exports = router;

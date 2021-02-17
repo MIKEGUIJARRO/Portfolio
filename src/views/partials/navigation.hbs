@@ -1,23 +1,30 @@
 <div class="flex justify-between py-8">
     {{#if navUser }}
     <ul class="flex flex-row space-x-4">
-        <p>Resume: {{url}}</p>
         <li><a href="{{resume.url}}" target="_blank" class="btn-square-rounded">Resume</a>
         </li>
-        <li><a href="#" class="btn-square-rounded">Transcript</a>
+        <li><a href="{{transcript.url}}" target="_blank" class="btn-square-rounded">Transcript</a>
         </li>
     </ul>
 
-    <ul class="flex flex-row space-x-8">
-        <li><a href="#about" class="grayscale-title">About</a></li>
-        <li><a href="#experience" class="grayscale-title">Experience</a></li>
-        <li><a href="#work" class="grayscale-title">Work</a></li>
-        <li><a href="#contact" class="grayscale-title">Contact</a></li>
+    <ul class="hidden md:flex md:flex-row md:space-x-8">
+        <li><a href="#about" class="">About</a></li>
+        <li><a href="#experience" class="">Experience</a></li>
+        <li><a href="#work" class="">Work</a></li>
+        <li><a href="#contact" class="">Contact</a></li>
+    </ul>
+    <ul class="inline-block md:hidden">
+        <li>
+            <svg id="main-menu"
+                class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                <use xlink:href="icons/feather-sprite.svg#menu" class="m-0" />
+            </svg>
+        </li>
     </ul>
     {{else if dashboardNav}}
     <ul class="flex flex-row space-x-8">
         <li><a href="/add-resume" class="btn-square-rounded">Add Resume</a></li>
-        <li><a href="#" class="btn-square-rounded">Add Transcript</a></li>
+        <li><a href="/add-transcript" class="btn-square-rounded">Add Transcript</a></li>
     </ul>
     <ul class="flex flex-row space-x-8">
         <li><a href="/" class="btn-main-outline">Home</a></li>
