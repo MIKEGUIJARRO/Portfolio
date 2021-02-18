@@ -5474,18 +5474,40 @@ window.onload = function () {
   _lax.default.addElements('.card', {
     scrollY: {
       //Driver name
-      translateX: [["elInY - ".concat(headerHeight), "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], ['-screenWidth/2', '0', 'screenWidth/2'], {
+      translateX: [["elInY", "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], ['-screenWidth/2', '0', 'screenWidth/2'], {
         easing: 'easeInOutQuart'
       }],
-      opacity: [["elInY - ".concat(headerHeight), "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], [0, 1, 0], {
+      opacity: [["elInY", "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], [0, 1, 0], {
         easing: 'easeInOutCubic'
       }],
-      "box-shadow": [["elInY - ".concat(headerHeight), "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], //["elInY+200", "elCenterY", "elOutY-200"],
+      "box-shadow": [["elInY", "elCenterY - ".concat(headerHeight), "elOutY - ".concat(headerHeight)], //["elInY+200", "elCenterY", "elOutY-200"],
       [50, 0, 50], {
         easing: 'easeInOutQuint',
         cssFn: function cssFn(val) {
           return "".concat(val, "px ").concat(val, "px ").concat(val, "px rgba(0,0,0,0.5)");
         }
+      }]
+    }
+  }); //Padding of parent element
+
+
+  var paddingBot = 24;
+
+  _lax.default.addElements('#purpose', {
+    scrollY: {
+      //Driver name
+      opacity: [["elInY + elHeight", "elCenterY"], [0, 1], {
+        easing: 'easeInCubic'
+      }]
+    }
+  });
+
+  _lax.default.addElements('#footer-text', {
+    scrollY: {
+      //Driver name
+      translateY: [// Padding 24
+      ["elInY - elHeight * 10", "elInY + elHeight + ".concat(paddingBot)], ["-elHeight * 5", 0], {
+        easing: 'easeInQuad'
       }]
     }
   });

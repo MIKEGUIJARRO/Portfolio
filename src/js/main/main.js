@@ -120,21 +120,21 @@ window.onload = function () {
         {
             scrollY: { //Driver name
                 translateX: [
-                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    [`elInY`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
                     ['-screenWidth/2', '0', 'screenWidth/2'],
                     {
                         easing: 'easeInOutQuart',
                     }
                 ],
                 opacity: [
-                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    [`elInY`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
                     [0, 1, 0],
                     {
                         easing: 'easeInOutCubic'
                     }
                 ],
                 "box-shadow": [
-                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    [`elInY`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
                     //["elInY+200", "elCenterY", "elOutY-200"],
                     [50, 0, 50],
                     {
@@ -142,6 +142,37 @@ window.onload = function () {
                         cssFn: (val) => {
                             return `${val}px ${val}px ${val}px rgba(0,0,0,0.5)`
                         }
+                    }
+                ],
+            }
+        },
+    );
+    //Padding of parent element
+    const paddingBot = 24;
+    lax.addElements(
+        '#purpose',
+        {
+            scrollY: { //Driver name
+                opacity: [
+                    [`elInY + elHeight`, `elCenterY`],
+                    [0, 1],
+                    {
+                        easing: 'easeInCubic'
+                    }
+                ],
+            }
+        },
+    ); 
+
+    lax.addElements(
+        '#footer-text',
+        {
+            scrollY: { //Driver name
+                translateY: [ // Padding 24
+                    [`elInY - elHeight * 10`, `elInY + elHeight + ${paddingBot}`],
+                    [`-elHeight * 5`, 0],
+                    {
+                        easing: 'easeInQuad'
                     }
                 ],
             }
