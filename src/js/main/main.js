@@ -1,5 +1,7 @@
 import tippy, { followCursor } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
+import lax from 'lax.js';
+
 
 //https://processwire.com/talk/topic/21154-how-to-use-tippyjs-in-a-module/
 
@@ -94,8 +96,6 @@ subMenu.appendChild(experienceEl);
 subMenu.appendChild(workEl);
 subMenu.appendChild(contactEl);
 
-console.log(subMenu);
-
 tippy('#main-menu', {
     content: subMenu.outerHTML,
     hideOnClick: "toggle",
@@ -103,4 +103,48 @@ tippy('#main-menu', {
     interactive: true,
     animateFill: true,
     allowHTML: true
-})
+});
+
+window.onload = function () {
+    lax.init()
+
+    // Add a driver that we use to control our animations
+    lax.addDriver('scrollY', function () {
+        return window.scrollY;
+    });
+    const headerHeight = document.getElementById("navbar").offsetHeight;
+
+    // Add animation bindings to elements
+    lax.addElements(
+        '.card',
+        {
+            scrollY: { //Driver name
+                translateX: [
+                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    ['-screenWidth/2', '0', 'screenWidth/2'],
+                    {
+                        easing: 'easeInOutQuart',
+                    }
+                ],
+                opacity: [
+                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    [0, 1, 0],
+                    {
+                        easing: 'easeInOutCubic'
+                    }
+                ],
+                "box-shadow": [
+                    [`elInY - ${headerHeight}`, `elCenterY - ${headerHeight}`, `elOutY - ${headerHeight}`],
+                    //["elInY+200", "elCenterY", "elOutY-200"],
+                    [50, 0, 50],
+                    {
+                        easing: 'easeInOutQuint',
+                        cssFn: (val) => {
+                            return `${val}px ${val}px ${val}px rgba(0,0,0,0.5)`
+                        }
+                    }
+                ],
+            }
+        },
+    );
+} 

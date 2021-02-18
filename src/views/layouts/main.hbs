@@ -11,20 +11,16 @@
 
 {{!-- https://atomiks.github.io/tippyjs/v6/getting-started/ --}}
 
-<body>
+<body class="overflow-x-hidden">
     {{!-- Nav container --}}
-    <div class="fixed top-0 w-full bg-white border-b-2 border-gray-200 z-10">
-        <div class="max-w-screen-lg mx-auto px-10 ">
-            {{> navigation}}
-        </div>
-    </div>
+    {{> navigation}}
     {{!-- Body container --}}
     <div class="max-w-screen-lg mx-auto px-10">
         {{{body}}}
     </div>
     {{!-- Footer --}}
     {{> footer}}
-    <script src="/main/bundle.js"></script>
+    <script src="/main/bundle.js" defer></script>
 
     {{#if loadAddElement}}
     <script src="/addElement/bundle.js"></script>
