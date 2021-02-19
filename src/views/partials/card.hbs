@@ -1,0 +1,58 @@
+<div class="col-span-2 max-w-md bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl card z-10">
+    <div class="p-8">
+        <div class="flex flex-col space-y-1 md:space-y-0 md:flex-row justify-between">
+            <div class="flex flex-row items-center">
+                <span class="mr-2">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#folder" class="m-0" />
+                    </svg>
+                </span>
+                <h4 class="grayscale-title">
+                    {{title}}
+                </h4>
+            </div>
+            <div class="flex flex-row items-center justify-around md:justify-end md:space-x-4 md:ml-2">
+                {{#if homePage}}
+                {{#if figma}}
+                <a href="{{figma}}" target="_blank">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#figma" class="m-0" />
+                    </svg>
+                </a>
+                {{/if}}
+                {{#if github}}
+                <a href="{{github}}" target="_blank">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#github" class="m-0" />
+                    </svg>
+                </a>
+                {{/if}}
+                {{#if webpage}}
+                <a href="{{webpage}}" target="_blank">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#external-link" class="m-0" />
+                    </svg>
+                </a>
+                {{/if}}
+                {{else}}
+                <a href="/edit-other-project/{{id}}">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#edit" class="m-0" />
+                    </svg>
+                </a>
+                <a href="/delete-other-project/{{id}}">
+                    <svg class="feather w-6 h-6">
+                        <use xlink:href="icons/feather-sprite.svg#trash-2" class="m-0" />
+                    </svg>
+                </a>
+                {{/if}}
+            </div>
+        </div>
+        <p class="mt-2">{{description}}</p>
+        <ul class="flex flex-wrap mt-2">
+            {{#each technologies}}
+            <li class="chip">{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

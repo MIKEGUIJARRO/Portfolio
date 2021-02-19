@@ -1,0 +1,40 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio of webdev projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index",
+    "dev": "nodemon src/index",
+    "build-css": "npx tailwindcss-cli@latest build ./src/css/styles.css -o ./src/public/css/styles.css",
+    "build-js": "parcel build src/js/main/main.js --target browser --out-dir src/public/main --out-file bundle --no-minify && parcel build src/js/addElement/addElement.js --target browser --out-dir src/public/addElement --out-file bundle --no-minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.6.0",
+    "autoprefixer": "^10.2.4",
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.19.0",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "feather-icons": "^4.28.0",
+    "firebase-admin": "^9.4.2",
+    "fs-extra": "^9.1.0",
+    "lax.js": "^2.0.3",
+    "mongoose": "^5.11.15",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "tailwindcss": "^2.0.2",
+    "tippy.js": "^6.2.7"
+  }
+}

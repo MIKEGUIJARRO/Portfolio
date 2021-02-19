@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/main/bundle.css" rel="stylesheet">
+    <title>{{title}}</title>
+</head>
+
+{{!-- https://atomiks.github.io/tippyjs/v6/getting-started/ --}}
+
+<body class="overflow-x-hidden">
+    {{!-- Nav container --}}
+    {{> navigation}}
+    {{!-- Body container --}}
+    <div class="max-w-screen-lg mx-auto px-10">
+        {{{body}}}
+    </div>
+    {{!-- Footer --}}
+    {{> footer}}
+    <script src="/main/bundle.js" defer></script>
+
+    {{#if loadAddElement}}
+    <script src="/addElement/bundle.js"></script>
+    {{/if}}
+
+
+</body>
+
+</html>

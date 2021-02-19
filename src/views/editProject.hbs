@@ -1,0 +1,61 @@
+{{!-- Hold some content that will be hidden
+when the page loads --}}
+<template id="template-chip">
+    <li class="chip hover:bg-red-600 cursor-pointer"></li>
+</template>
+
+{{!-- Dashboard configuration --}}
+<div class="pt-32">
+    <h1 class="font-title">Edit Project</h1>
+    <div class="section-block-sm">
+        <div class="section-block-lg">
+            <div class="pt-16 flex flex-row items-center">
+                <span class="mr-2">
+                    <svg id="{{idInfo}}"
+                        class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                        <use xlink:href="icons/feather-sprite.svg#info" class="m-0" />
+                    </svg>
+                </span>
+                <h3 class="font-title">
+                    {{subtitle}}
+                </h3>
+            </div>
+            <form class="flex flex-col space-y-4" id="form" action="{{urlAction}}">
+                <input class="color-light-bg px-3 py-2" type="text" id="title" name="title" placeholder="Title"
+                    value="{{project.title}}">
+                <textarea name="description" id="description" cols="30" rows="10" class="color-light-bg px-2 py-1"
+                    placeholder="Description">{{project.description}}</textarea>
+                <input class="color-light-bg px-3 py-2" type="url" id="webpage" name="webpage"
+                    placeholder="Webpage Link" value="{{project.webpage}}">
+                <input class="color-light-bg px-3 py-2" type="url" id="github" name="github" placeholder="Github Link"
+                    value="{{project.github}}">
+                <input class="color-light-bg px-3 py-2" type="url" id="figma" name="figma" placeholder="Figma Link"
+                    value="{{project.figma}}">
+                {{#if addMainElement}}
+                <div>
+                    <input class="color-light-bg px-3 py-2" type="file" accept="image/*" id="file">
+                    <label for="file" class="text-sm font-medium">Click to update the actual image</label>
+                </div>
+                {{/if}}
+                <div class="flex flex-row space-x-4 items-center">
+                    <input class="color-light-bg px-3 py-2 flex-1" type="text" id="technology" name="technology"
+                        placeholder="Technology used">
+                    <button class="font-title" type="button" id="add-chip">
+                        <svg id=""
+                            class="feather w-6 h-6 transition duration-150 ease-in-out transform hover:scale-110 hover:text-gray-900">
+                            <use xlink:href="icons/feather-sprite.svg#plus-circle" class="m-0" />
+                        </svg>
+                    </button>
+                </div>
+                <ul id="chips-container" class="flex flex-wrap mt-2">
+                    {{#if project.technologies}}
+                    {{#each project.technologies}}
+                    <li class="chip hover:bg-red-600 cursor-pointer">{{this}}</li>
+                    {{/each}}
+                    {{/if}}
+                </ul>
+                <button type="button" id="send-form" class="btn-square-rounded">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
