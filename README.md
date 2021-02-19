@@ -35,8 +35,8 @@ To view the current webpage, **[click here](https://mikeguijarro.herokuapp.com/)
 - [Tippy.js](https://atomiks.github.io/tippyjs/) - JavaScript tooltip library
 
 ## License 📄
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-Feel free to clone this project and connect it to you own firebase app. The only requirement that I asked you for is to refer me as the author and backlink my portfolio. 🤗
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.\
+Feel free to clone this project and connect it to you own firebase app. The only requirement that I asked you for is to refer me as the author and backlink the reference to my portfolio. 🤗
 
 ## Acknowledgments 🎁
 I was motivated to build this project because I wanted to contribute on something useful for the jr dev community. Special thanks to [Maximilian](https://twitter.com/maxedapps), his passion for teaching is a big motivation for motivated learners like me.
