@@ -6,7 +6,7 @@ This is a CRUD dynamic website implemented with a NodeJs / Express / Firebase / 
   <br>
 **_IMPORTANT NOTE 2_**: Yes, I love challenges.
 <h2 align="center">
-  <img src="profileScreen.png" alt="Look up!" width="600px" />
+  <img src="profileScreen.png" alt="Look up!" width="100%" />
   <br>
 </h2>
 
