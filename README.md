@@ -6,7 +6,10 @@ This is a CRUD dynamic website implemented with a NodeJs / Express / Firebase / 
   <br>
 **_IMPORTANT NOTE 2_**: Yes, I love challenges.
 <h2 align="center">
-  <img src="profileScreen.png" alt="Look up!" width="100%" />
+  <a href="https://mikeguijarro.herokuapp.com"> 
+    <img src="profileScreen.png" alt="Look up!" width="100%" />
+  </a>
+  
   <br>
 </h2>
 
@@ -18,7 +21,7 @@ This is a CRUD dynamic website implemented with a NodeJs / Express / Firebase / 
 ⚡️ Optimized with Parcel\
 ⚡️ Well organized backend
 
-To view the current webpage, **[click here](https://mikeguijarro.herokuapp.com//)**
+To view the current webpage, **[click here](https://mikeguijarro.herokuapp.com/)**
 
 ## Technologies used 🛠️
 - [Parcel](https://parceljs.org/getting_started.html/) - Web application bundler
