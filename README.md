@@ -34,6 +34,10 @@ To view the current webpage, **[click here](https://mikeguijarro.herokuapp.com/)
 - [Lax.js](https://github.com/alexfoxy/lax.js?utm_source=xinquji/) - JavaScript animations library
 - [Tippy.js](https://atomiks.github.io/tippyjs/) - JavaScript tooltip library
 
+## Other resources 🧬
+- [Figma](https://www.figma.com/file/HOuj55zkHZ04zscccTx52Y3y/Personal-CV?node-id=94%3A14) - UI prototype 
+
+
 ## License 📄
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.\
 Feel free to clone this project and connect it to you own firebase app. The only requirement that I asked you for is to refer me as the author and backlink the reference to my portfolio. 🤗
