@@ -14,7 +14,7 @@ This is a CRUD dynamic website implemented with a NodeJs / Express / Firebase / 
 </h2>
 
 ## Features 💡
-⚡️ Moder UI Design + Reveal Animations\
+⚡️ Modern UI Design + Reveal Animations\
 ⚡️ One Page Layout\
 ⚡️ Styled with Tailwind and Tippy Js\
 ⚡️ Fully responsive\
