@@ -6270,9 +6270,8 @@ document.addEventListener("DOMContentLoaded", /*#__PURE__*/_asyncToGenerator( /*
 
           firebase.initializeApp(firebaseConfig);
           firebase.analytics();
-          analytics.logEvent("demo");
 
-        case 4:
+        case 3:
         case "end":
           return _context.stop();
       }
