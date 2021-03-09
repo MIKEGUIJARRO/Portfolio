@@ -117,7 +117,737 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"U3PH":[function(require,module,exports) {
+})({"dgxz":[function(require,module,exports) {
+var global = arguments[3];
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!(function(global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = typeof module === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  runtime.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration. If the Promise is rejected, however, the
+          // result for this iteration will be rejected with the same
+          // reason. Note that rejections of yielded Promises are not
+          // thrown back into the generator function, as is the case
+          // when an awaited Promise is rejected. This difference in
+          // behavior between yield and await is important, because it
+          // allows the consumer to decide what to do with the yielded
+          // rejection (swallow it and continue, manually .throw it back
+          // into the generator, abandon iteration, whatever). With
+          // await, by contrast, there is no opportunity to examine the
+          // rejection reason outside the generator function, so the
+          // only option is to throw it from the await expression, and
+          // let the generator function handle the exception.
+          result.value = unwrapped;
+          resolve(result);
+        }, reject);
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return runtime.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+})(
+  // In sloppy mode, unbound `this` refers to the global object, fallback to
+  // Function constructor if we're in global strict mode. That is sadly a form
+  // of indirect eval which violates Content Security Policy.
+  (function() { return this })() || Function("return this")()
+);
+
+},{}],"U3PH":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5362,20 +6092,14 @@ var _default = tippy;
 exports.default = _default;
 },{"@popperjs/core":"gEkS"}],"oHVP":[function(require,module,exports) {
 
-},{}],"qd03":[function(require,module,exports) {
-"use strict";function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _slicedToArray(e,t){return _arrayWithHoles(e)||_iterableToArrayLimit(e,t)||_unsupportedIterableToArray(e,t)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function _unsupportedIterableToArray(e,t){if(e){if("string"==typeof e)return _arrayLikeToArray(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?_arrayLikeToArray(e,t):void 0}}function _arrayLikeToArray(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function _iterableToArrayLimit(e,t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e)){var n=[],r=!0,i=!1,o=void 0;try{for(var a,l=e[Symbol.iterator]();!(r=(a=l.next()).done)&&(n.push(a.value),!t||n.length!==t);r=!0);}catch(e){i=!0,o=e}finally{try{r||null==l.return||l.return()}finally{if(i)throw o}}return n}}function _arrayWithHoles(e){if(Array.isArray(e))return e}!function(){function n(e){return["elInY+elHeight","elCenterY-".concat(e=0<arguments.length&&void 0!==e?e:30),"elCenterY","elCenterY+".concat(e),"elOutY-elHeight"]}var l,u,s,_,P,I,t={fadeInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:0;return{opacity:[n(0<arguments.length&&void 0!==e?e:30),[t,1,1,1,t]]}},fadeIn:function(e,t){return{opacity:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:0,1]]}},fadeOut:function(e,t){return{opacity:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[1,1<arguments.length&&void 0!==t?t:0]]}},blurInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:20;return{blur:[n(0<arguments.length&&void 0!==e?e:100),[t,0,0,0,t]]}},blurIn:function(e,t){return{blur:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:20,0]]}},blurOut:function(e,t){return{opacity:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[0,1<arguments.length&&void 0!==t?t:20]]}},scaleInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:.6;return{scale:[n(0<arguments.length&&void 0!==e?e:100),[t,1,1,1,t]]}},scaleIn:function(e,t){return{scale:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:.6,1]]}},scaleOut:function(e,t){return{scale:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[1,1<arguments.length&&void 0!==t?t:.6]]}},slideX:function(e,t){return{translateX:[["elInY",0<arguments.length&&void 0!==e?e:0],[0,1<arguments.length&&void 0!==t?t:500]]}},slideY:function(e,t){return{translateY:[["elInY",0<arguments.length&&void 0!==e?e:0],[0,1<arguments.length&&void 0!==t?t:500]]}},spin:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotate:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},flipX:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotateX:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},flipY:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotateY:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},jiggle:function(e,t){e=0<arguments.length&&void 0!==e?e:50,t=1<arguments.length&&void 0!==t?t:40;return{skewX:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},seesaw:function(e,t){e=0<arguments.length&&void 0!==e?e:50,t=1<arguments.length&&void 0!==t?t:40;return{skewY:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},zigzag:function(e,t){e=0<arguments.length&&void 0!==e?e:100,t=1<arguments.length&&void 0!==t?t:100;return{translateX:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},hueRotate:function(e,t){e=0<arguments.length&&void 0!==e?e:600;return{"hue-rotate":[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}}},e=(l=["perspective","scaleX","scaleY","scale","skewX","skewY","skew","rotateX","rotateY","rotate"],u=["blur","hue-rotate","brightness"],s=["translateX","translateY","translateZ"],_=["perspective","border-radius","blur","translateX","translateY","translateZ"],P=["hue-rotate","rotate","rotateX","rotateY","skew","skewX","skewY"],I={easeInQuad:function(e){return e*e},easeOutQuad:function(e){return e*(2-e)},easeInOutQuad:function(e){return e<.5?2*e*e:(4-2*e)*e-1},easeInCubic:function(e){return e*e*e},easeOutCubic:function(e){return--e*e*e+1},easeInOutCubic:function(e){return e<.5?4*e*e*e:(e-1)*(2*e-2)*(2*e-2)+1},easeInQuart:function(e){return e*e*e*e},easeOutQuart:function(e){return 1- --e*e*e*e},easeInOutQuart:function(e){return e<.5?8*e*e*e*e:1-8*--e*e*e*e},easeInQuint:function(e){return e*e*e*e*e},easeOutQuint:function(e){return 1+--e*e*e*e*e},easeInOutQuint:function(e){return e<.5?16*e*e*e*e*e:1+16*--e*e*e*e*e},easeOutBounce:function(e){var t=7.5625,n=2.75;return e<1/n?t*e*e:e<2/n?t*(e-=1.5/n)*e+.75:e<2.5/n?t*(e-=2.25/n)*e+.9375:t*(e-=2.625/n)*e+.984375},easeInBounce:function(e){return 1-I.easeOutBounce(1-e)},easeOutBack:function(e){return 1+2.70158*Math.pow(e-1,3)+1.70158*Math.pow(e-1,2)},easeInBack:function(e){return 2.70158*e*e*e-1.70158*e*e}},new function e(){var o=this;_classCallCheck(this,e),_defineProperty(this,"drivers",[]),_defineProperty(this,"elements",[]),_defineProperty(this,"frame",0),_defineProperty(this,"debug",!1),_defineProperty(this,"windowWidth",0),_defineProperty(this,"windowHeight",0),_defineProperty(this,"presets",t),_defineProperty(this,"debugData",{frameLengths:[]}),_defineProperty(this,"init",function(){o.findAndAddElements(),window.requestAnimationFrame(o.onAnimationFrame),o.windowWidth=document.body.clientWidth,o.windowHeight=document.body.clientHeight,window.onresize=o.onWindowResize}),_defineProperty(this,"onWindowResize",function(){document.body.clientWidth===o.windowWidth&&document.body.clientHeight===o.windowHeight||(o.windowWidth=document.body.clientWidth,o.windowHeight=document.body.clientHeight,o.elements.forEach(function(e){return e.calculateTransforms()}))}),_defineProperty(this,"onAnimationFrame",function(e){o.debug&&(o.debugData.frameStart=Date.now());var t,n={};o.drivers.forEach(function(e){n[e.name]=e.getValue(o.frame)}),o.elements.forEach(function(e){e.update(n,o.frame)}),o.debug&&o.debugData.frameLengths.push(Date.now()-o.debugData.frameStart),o.frame%60==0&&o.debug&&(t=Math.ceil(o.debugData.frameLengths.reduce(function(e,t){return e+t},0)/60),console.log("Average frame calculation time: ".concat(t,"ms")),o.debugData.frameLengths=[]),o.frame++,window.requestAnimationFrame(o.onAnimationFrame)}),_defineProperty(this,"addDriver",function(e,t){var n=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};o.drivers.push(new i(e,t,n))}),_defineProperty(this,"removeDriver",function(t){o.drivers=o.drivers.filter(function(e){return e.name!==t})}),_defineProperty(this,"findAndAddElements",function(){o.elements=[],document.querySelectorAll(".lax").forEach(function(e){var t=[];e.classList.forEach(function(e){e.includes("lax_preset")&&(e=e.replace("lax_preset_",""),t.push(e))});var n=_defineProperty({},"scrollY",{presets:t});o.elements.push(new f(".lax",o,e,n,0,{}))})}),_defineProperty(this,"addElements",function(n,r,i){document.querySelectorAll(n).forEach(function(e,t){o.elements.push(new f(n,o,e,r,t,i))})}),_defineProperty(this,"removeElements",function(t){o.elements=o.elements.filter(function(e){return e.selector!==t})}),_defineProperty(this,"addElement",function(e,t,n){o.elements.push(new f("",o,e,t,0,n))}),_defineProperty(this,"removeElement",function(t){o.elements=o.elements.filter(function(e){return e.domElement!==t})})});function c(e,t){if(Array.isArray(e))return e;for(var n=Object.keys(e).map(function(e){return parseInt(e)}).sort(function(e,t){return t<e?1:-1}),r=n[n.length-1],i=0;i<n.length;i++){var o=n[i];if(t<o){r=o;break}}return e[r]}function d(e,t,n){var r=t.width,i=t.height,o=t.x,a=t.y;if("number"==typeof e)return e;var l,u=document.body.scrollHeight,s=document.body.scrollWidth,c=window.innerWidth,d=window.innerHeight,f=_slicedToArray((l=void 0!==window.pageXOffset,f="CSS1Compat"===(document.compatMode||""),t=l?window.pageXOffset:(f?document.documentElement:document.body).scrollLeft,[l?window.pageYOffset:(f?document.documentElement:document.body).scrollTop,t]),2),t=f[0],o=o+f[1],f=o+r,a=a+t,t=a+i;return Function("return ".concat(e.replace(/screenWidth/g,c).replace(/screenHeight/g,d).replace(/pageHeight/g,u).replace(/pageWidth/g,s).replace(/elWidth/g,r).replace(/elHeight/g,i).replace(/elInY/g,a-d).replace(/elOutY/g,t).replace(/elCenterY/g,a+i/2-d/2).replace(/elInX/g,o-c).replace(/elOutX/g,f).replace(/elCenterX/g,o+r/2-c/2).replace(/index/g,n)))()}function i(e,t){var n=this,r=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};_classCallCheck(this,i),_defineProperty(this,"getValueFn",void 0),_defineProperty(this,"name",""),_defineProperty(this,"lastValue",0),_defineProperty(this,"frameStep",1),_defineProperty(this,"m1",0),_defineProperty(this,"m2",0),_defineProperty(this,"inertia",0),_defineProperty(this,"inertiaEnabled",!1),_defineProperty(this,"getValue",function(e){var t=n.lastValue;return e%n.frameStep==0&&(t=n.getValueFn(e)),n.inertiaEnabled&&(e=t-n.lastValue,n.m1=.8*n.m1+e*(1-.8),n.m2=.8*n.m2+n.m1*(1-.8),n.inertia=Math.round(5e3*n.m2)/15e3),n.lastValue=t,[n.lastValue,n.inertia]}),this.name=e,this.getValueFn=t,Object.keys(r).forEach(function(e){n[e]=r[e]}),this.lastValue=this.getValueFn(0)}function f(e,t,n,r){var b=this,i=4<arguments.length&&void 0!==arguments[4]?arguments[4]:0,o=5<arguments.length&&void 0!==arguments[5]?arguments[5]:{};_classCallCheck(this,f),_defineProperty(this,"domElement",void 0),_defineProperty(this,"transformsData",void 0),_defineProperty(this,"styles",{}),_defineProperty(this,"selector",""),_defineProperty(this,"groupIndex",0),_defineProperty(this,"laxInstance",void 0),_defineProperty(this,"onUpdate",void 0),_defineProperty(this,"update",function(e,t){var n,r=b.transforms,i={};for(n in r){var o=r[n];e[n]||console.error("No lax driver with name: ",n);var a,l=_slicedToArray(e[n],2),u=l[0],s=l[1];for(a in o){var c,d=_slicedToArray(o[a],3),f=d[0],h=d[1],m=d[2],p=void 0===m?{}:m,g=p.modValue,y=p.frameStep,v=void 0===y?1:y,w=p.easing,d=p.inertia,m=p.inertiaMode,y=p.cssFn,p=p.cssUnit,p=void 0===p?"":p,w=I[w];t%v==0&&(w=function(e,t,n,r){var i=0;if(e.forEach(function(e){e<n&&i++}),i<=0)return t[0];if(i>=e.length)return t[e.length-1];var o,a=(a=e[o=i-1],e=e[i],(n-a)/(e-a));return r&&(a=r(a)),o=t[o],t=t[i],o*(1-(a=a))+t*a}(f,h,g?u%g:u,w),d&&(c=s*d,"absolute"===m&&(c=Math.abs(c)),w+=c),c="px"==(p||_.includes(a)?"px":P.includes(a)?"deg":"")?0:3,c=w.toFixed(c),i[a]=y?y(c,b.domElement):c+p)}}b.applyStyles(i),b.onUpdate&&b.onUpdate(e,b.domElement)}),_defineProperty(this,"calculateTransforms",function(){b.transforms={};var e,l=b.laxInstance.windowWidth;for(e in b.transformsData)!function(e){var o=b.transformsData[e],a={},t=o.presets;(void 0===t?[]:t).forEach(function(e){var t,n=_slicedToArray(e.split(":"),3),r=n[0],i=n[1],e=n[2],n=window.lax.presets[r];n?(t=n(i,e),Object.keys(t).forEach(function(e){o[e]=t[e]})):console.error("Lax preset cannot be found with name: ",r)}),delete o.presets;for(var n in o)!function(e){var t=_slicedToArray(o[e],3),n=t[0],r=void 0===n?[-1e9,1e9]:n,n=t[1],n=void 0===n?[-1e9,1e9]:n,t=t[2],t=void 0===t?{}:t,i=b.domElement.getBoundingClientRect(),r=c(r,l).map(function(e){return d(e,i,b.groupIndex)}),n=c(n,l).map(function(e){return d(e,i,b.groupIndex)});a[e]=[r,n,t]}(n);b.transforms[e]=a}(e)}),_defineProperty(this,"applyStyles",function(e){var r,i,o,t=(r=e,i={transform:"",filter:""},o={translateX:1e-5,translateY:1e-5,translateZ:1e-5},Object.keys(r).forEach(function(e){var t=r[e],n=_.includes(e)?"px":P.includes(e)?"deg":"";s.includes(e)?o[e]=t:l.includes(e)?i.transform+="".concat(e,"(").concat(t).concat(n,") "):u.includes(e)?i.filter+="".concat(e,"(").concat(t).concat(n,") "):i[e]="".concat(t).concat(n," ")}),i.transform="translate3d(".concat(o.translateX,"px, ").concat(o.translateY,"px, ").concat(o.translateZ,"px) ").concat(i.transform),i);Object.keys(t).forEach(function(e){b.domElement.style.setProperty(e,t[e])})}),this.selector=e,this.laxInstance=t,this.domElement=n,this.transformsData=r,this.groupIndex=i;var a=void 0===(i=o.style)?{}:i,o=o.onUpdate;Object.keys(a).forEach(function(e){n.style.setProperty(e,a[e])}),o&&(this.onUpdate=o),this.calculateTransforms()}"undefined"!=typeof module&&void 0!==module.exports?module.exports=e:window.lax=e}();
-},{}],"epB2":[function(require,module,exports) {
+},{}],"CKqK":[function(require,module,exports) {
 "use strict";
 
 var _tippy2 = _interopRequireWildcard(require("tippy.js"));
 
 require("tippy.js/dist/tippy.css");
 
-var _lax = _interopRequireDefault(require("lax.js"));
-
 var _tippy;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -5460,6 +6184,14 @@ subMenu.appendChild(contactEl);
   animateFill: true,
   allowHTML: true
 });
+},{"tippy.js":"LTUt","tippy.js/dist/tippy.css":"oHVP"}],"qd03":[function(require,module,exports) {
+"use strict";function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _slicedToArray(e,t){return _arrayWithHoles(e)||_iterableToArrayLimit(e,t)||_unsupportedIterableToArray(e,t)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function _unsupportedIterableToArray(e,t){if(e){if("string"==typeof e)return _arrayLikeToArray(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?_arrayLikeToArray(e,t):void 0}}function _arrayLikeToArray(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function _iterableToArrayLimit(e,t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e)){var n=[],r=!0,i=!1,o=void 0;try{for(var a,l=e[Symbol.iterator]();!(r=(a=l.next()).done)&&(n.push(a.value),!t||n.length!==t);r=!0);}catch(e){i=!0,o=e}finally{try{r||null==l.return||l.return()}finally{if(i)throw o}}return n}}function _arrayWithHoles(e){if(Array.isArray(e))return e}!function(){function n(e){return["elInY+elHeight","elCenterY-".concat(e=0<arguments.length&&void 0!==e?e:30),"elCenterY","elCenterY+".concat(e),"elOutY-elHeight"]}var l,u,s,_,P,I,t={fadeInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:0;return{opacity:[n(0<arguments.length&&void 0!==e?e:30),[t,1,1,1,t]]}},fadeIn:function(e,t){return{opacity:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:0,1]]}},fadeOut:function(e,t){return{opacity:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[1,1<arguments.length&&void 0!==t?t:0]]}},blurInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:20;return{blur:[n(0<arguments.length&&void 0!==e?e:100),[t,0,0,0,t]]}},blurIn:function(e,t){return{blur:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:20,0]]}},blurOut:function(e,t){return{opacity:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[0,1<arguments.length&&void 0!==t?t:20]]}},scaleInOut:function(e,t){t=1<arguments.length&&void 0!==t?t:.6;return{scale:[n(0<arguments.length&&void 0!==e?e:100),[t,1,1,1,t]]}},scaleIn:function(e,t){return{scale:[["elInY+elHeight",0<arguments.length&&void 0!==e?e:"elCenterY"],[1<arguments.length&&void 0!==t?t:.6,1]]}},scaleOut:function(e,t){return{scale:[[0<arguments.length&&void 0!==e?e:"elCenterY","elOutY-elHeight"],[1,1<arguments.length&&void 0!==t?t:.6]]}},slideX:function(e,t){return{translateX:[["elInY",0<arguments.length&&void 0!==e?e:0],[0,1<arguments.length&&void 0!==t?t:500]]}},slideY:function(e,t){return{translateY:[["elInY",0<arguments.length&&void 0!==e?e:0],[0,1<arguments.length&&void 0!==t?t:500]]}},spin:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotate:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},flipX:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotateX:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},flipY:function(e,t){e=0<arguments.length&&void 0!==e?e:1e3;return{rotateY:[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}},jiggle:function(e,t){e=0<arguments.length&&void 0!==e?e:50,t=1<arguments.length&&void 0!==t?t:40;return{skewX:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},seesaw:function(e,t){e=0<arguments.length&&void 0!==e?e:50,t=1<arguments.length&&void 0!==t?t:40;return{skewY:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},zigzag:function(e,t){e=0<arguments.length&&void 0!==e?e:100,t=1<arguments.length&&void 0!==t?t:100;return{translateX:[[0,+e,2*e,3*e,4*e],[0,t,0,-t,0],{modValue:4*e}]}},hueRotate:function(e,t){e=0<arguments.length&&void 0!==e?e:600;return{"hue-rotate":[[0,e],[0,1<arguments.length&&void 0!==t?t:360],{modValue:e}]}}},e=(l=["perspective","scaleX","scaleY","scale","skewX","skewY","skew","rotateX","rotateY","rotate"],u=["blur","hue-rotate","brightness"],s=["translateX","translateY","translateZ"],_=["perspective","border-radius","blur","translateX","translateY","translateZ"],P=["hue-rotate","rotate","rotateX","rotateY","skew","skewX","skewY"],I={easeInQuad:function(e){return e*e},easeOutQuad:function(e){return e*(2-e)},easeInOutQuad:function(e){return e<.5?2*e*e:(4-2*e)*e-1},easeInCubic:function(e){return e*e*e},easeOutCubic:function(e){return--e*e*e+1},easeInOutCubic:function(e){return e<.5?4*e*e*e:(e-1)*(2*e-2)*(2*e-2)+1},easeInQuart:function(e){return e*e*e*e},easeOutQuart:function(e){return 1- --e*e*e*e},easeInOutQuart:function(e){return e<.5?8*e*e*e*e:1-8*--e*e*e*e},easeInQuint:function(e){return e*e*e*e*e},easeOutQuint:function(e){return 1+--e*e*e*e*e},easeInOutQuint:function(e){return e<.5?16*e*e*e*e*e:1+16*--e*e*e*e*e},easeOutBounce:function(e){var t=7.5625,n=2.75;return e<1/n?t*e*e:e<2/n?t*(e-=1.5/n)*e+.75:e<2.5/n?t*(e-=2.25/n)*e+.9375:t*(e-=2.625/n)*e+.984375},easeInBounce:function(e){return 1-I.easeOutBounce(1-e)},easeOutBack:function(e){return 1+2.70158*Math.pow(e-1,3)+1.70158*Math.pow(e-1,2)},easeInBack:function(e){return 2.70158*e*e*e-1.70158*e*e}},new function e(){var o=this;_classCallCheck(this,e),_defineProperty(this,"drivers",[]),_defineProperty(this,"elements",[]),_defineProperty(this,"frame",0),_defineProperty(this,"debug",!1),_defineProperty(this,"windowWidth",0),_defineProperty(this,"windowHeight",0),_defineProperty(this,"presets",t),_defineProperty(this,"debugData",{frameLengths:[]}),_defineProperty(this,"init",function(){o.findAndAddElements(),window.requestAnimationFrame(o.onAnimationFrame),o.windowWidth=document.body.clientWidth,o.windowHeight=document.body.clientHeight,window.onresize=o.onWindowResize}),_defineProperty(this,"onWindowResize",function(){document.body.clientWidth===o.windowWidth&&document.body.clientHeight===o.windowHeight||(o.windowWidth=document.body.clientWidth,o.windowHeight=document.body.clientHeight,o.elements.forEach(function(e){return e.calculateTransforms()}))}),_defineProperty(this,"onAnimationFrame",function(e){o.debug&&(o.debugData.frameStart=Date.now());var t,n={};o.drivers.forEach(function(e){n[e.name]=e.getValue(o.frame)}),o.elements.forEach(function(e){e.update(n,o.frame)}),o.debug&&o.debugData.frameLengths.push(Date.now()-o.debugData.frameStart),o.frame%60==0&&o.debug&&(t=Math.ceil(o.debugData.frameLengths.reduce(function(e,t){return e+t},0)/60),console.log("Average frame calculation time: ".concat(t,"ms")),o.debugData.frameLengths=[]),o.frame++,window.requestAnimationFrame(o.onAnimationFrame)}),_defineProperty(this,"addDriver",function(e,t){var n=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};o.drivers.push(new i(e,t,n))}),_defineProperty(this,"removeDriver",function(t){o.drivers=o.drivers.filter(function(e){return e.name!==t})}),_defineProperty(this,"findAndAddElements",function(){o.elements=[],document.querySelectorAll(".lax").forEach(function(e){var t=[];e.classList.forEach(function(e){e.includes("lax_preset")&&(e=e.replace("lax_preset_",""),t.push(e))});var n=_defineProperty({},"scrollY",{presets:t});o.elements.push(new f(".lax",o,e,n,0,{}))})}),_defineProperty(this,"addElements",function(n,r,i){document.querySelectorAll(n).forEach(function(e,t){o.elements.push(new f(n,o,e,r,t,i))})}),_defineProperty(this,"removeElements",function(t){o.elements=o.elements.filter(function(e){return e.selector!==t})}),_defineProperty(this,"addElement",function(e,t,n){o.elements.push(new f("",o,e,t,0,n))}),_defineProperty(this,"removeElement",function(t){o.elements=o.elements.filter(function(e){return e.domElement!==t})})});function c(e,t){if(Array.isArray(e))return e;for(var n=Object.keys(e).map(function(e){return parseInt(e)}).sort(function(e,t){return t<e?1:-1}),r=n[n.length-1],i=0;i<n.length;i++){var o=n[i];if(t<o){r=o;break}}return e[r]}function d(e,t,n){var r=t.width,i=t.height,o=t.x,a=t.y;if("number"==typeof e)return e;var l,u=document.body.scrollHeight,s=document.body.scrollWidth,c=window.innerWidth,d=window.innerHeight,f=_slicedToArray((l=void 0!==window.pageXOffset,f="CSS1Compat"===(document.compatMode||""),t=l?window.pageXOffset:(f?document.documentElement:document.body).scrollLeft,[l?window.pageYOffset:(f?document.documentElement:document.body).scrollTop,t]),2),t=f[0],o=o+f[1],f=o+r,a=a+t,t=a+i;return Function("return ".concat(e.replace(/screenWidth/g,c).replace(/screenHeight/g,d).replace(/pageHeight/g,u).replace(/pageWidth/g,s).replace(/elWidth/g,r).replace(/elHeight/g,i).replace(/elInY/g,a-d).replace(/elOutY/g,t).replace(/elCenterY/g,a+i/2-d/2).replace(/elInX/g,o-c).replace(/elOutX/g,f).replace(/elCenterX/g,o+r/2-c/2).replace(/index/g,n)))()}function i(e,t){var n=this,r=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};_classCallCheck(this,i),_defineProperty(this,"getValueFn",void 0),_defineProperty(this,"name",""),_defineProperty(this,"lastValue",0),_defineProperty(this,"frameStep",1),_defineProperty(this,"m1",0),_defineProperty(this,"m2",0),_defineProperty(this,"inertia",0),_defineProperty(this,"inertiaEnabled",!1),_defineProperty(this,"getValue",function(e){var t=n.lastValue;return e%n.frameStep==0&&(t=n.getValueFn(e)),n.inertiaEnabled&&(e=t-n.lastValue,n.m1=.8*n.m1+e*(1-.8),n.m2=.8*n.m2+n.m1*(1-.8),n.inertia=Math.round(5e3*n.m2)/15e3),n.lastValue=t,[n.lastValue,n.inertia]}),this.name=e,this.getValueFn=t,Object.keys(r).forEach(function(e){n[e]=r[e]}),this.lastValue=this.getValueFn(0)}function f(e,t,n,r){var b=this,i=4<arguments.length&&void 0!==arguments[4]?arguments[4]:0,o=5<arguments.length&&void 0!==arguments[5]?arguments[5]:{};_classCallCheck(this,f),_defineProperty(this,"domElement",void 0),_defineProperty(this,"transformsData",void 0),_defineProperty(this,"styles",{}),_defineProperty(this,"selector",""),_defineProperty(this,"groupIndex",0),_defineProperty(this,"laxInstance",void 0),_defineProperty(this,"onUpdate",void 0),_defineProperty(this,"update",function(e,t){var n,r=b.transforms,i={};for(n in r){var o=r[n];e[n]||console.error("No lax driver with name: ",n);var a,l=_slicedToArray(e[n],2),u=l[0],s=l[1];for(a in o){var c,d=_slicedToArray(o[a],3),f=d[0],h=d[1],m=d[2],p=void 0===m?{}:m,g=p.modValue,y=p.frameStep,v=void 0===y?1:y,w=p.easing,d=p.inertia,m=p.inertiaMode,y=p.cssFn,p=p.cssUnit,p=void 0===p?"":p,w=I[w];t%v==0&&(w=function(e,t,n,r){var i=0;if(e.forEach(function(e){e<n&&i++}),i<=0)return t[0];if(i>=e.length)return t[e.length-1];var o,a=(a=e[o=i-1],e=e[i],(n-a)/(e-a));return r&&(a=r(a)),o=t[o],t=t[i],o*(1-(a=a))+t*a}(f,h,g?u%g:u,w),d&&(c=s*d,"absolute"===m&&(c=Math.abs(c)),w+=c),c="px"==(p||_.includes(a)?"px":P.includes(a)?"deg":"")?0:3,c=w.toFixed(c),i[a]=y?y(c,b.domElement):c+p)}}b.applyStyles(i),b.onUpdate&&b.onUpdate(e,b.domElement)}),_defineProperty(this,"calculateTransforms",function(){b.transforms={};var e,l=b.laxInstance.windowWidth;for(e in b.transformsData)!function(e){var o=b.transformsData[e],a={},t=o.presets;(void 0===t?[]:t).forEach(function(e){var t,n=_slicedToArray(e.split(":"),3),r=n[0],i=n[1],e=n[2],n=window.lax.presets[r];n?(t=n(i,e),Object.keys(t).forEach(function(e){o[e]=t[e]})):console.error("Lax preset cannot be found with name: ",r)}),delete o.presets;for(var n in o)!function(e){var t=_slicedToArray(o[e],3),n=t[0],r=void 0===n?[-1e9,1e9]:n,n=t[1],n=void 0===n?[-1e9,1e9]:n,t=t[2],t=void 0===t?{}:t,i=b.domElement.getBoundingClientRect(),r=c(r,l).map(function(e){return d(e,i,b.groupIndex)}),n=c(n,l).map(function(e){return d(e,i,b.groupIndex)});a[e]=[r,n,t]}(n);b.transforms[e]=a}(e)}),_defineProperty(this,"applyStyles",function(e){var r,i,o,t=(r=e,i={transform:"",filter:""},o={translateX:1e-5,translateY:1e-5,translateZ:1e-5},Object.keys(r).forEach(function(e){var t=r[e],n=_.includes(e)?"px":P.includes(e)?"deg":"";s.includes(e)?o[e]=t:l.includes(e)?i.transform+="".concat(e,"(").concat(t).concat(n,") "):u.includes(e)?i.filter+="".concat(e,"(").concat(t).concat(n,") "):i[e]="".concat(t).concat(n," ")}),i.transform="translate3d(".concat(o.translateX,"px, ").concat(o.translateY,"px, ").concat(o.translateZ,"px) ").concat(i.transform),i);Object.keys(t).forEach(function(e){b.domElement.style.setProperty(e,t[e])})}),this.selector=e,this.laxInstance=t,this.domElement=n,this.transformsData=r,this.groupIndex=i;var a=void 0===(i=o.style)?{}:i,o=o.onUpdate;Object.keys(a).forEach(function(e){n.style.setProperty(e,a[e])}),o&&(this.onUpdate=o),this.calculateTransforms()}"undefined"!=typeof module&&void 0!==module.exports?module.exports=e:window.lax=e}();
+},{}],"ohUi":[function(require,module,exports) {
+"use strict";
+
+var _lax = _interopRequireDefault(require("lax.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.onload = function () {
   _lax.default.init(); // Add a driver that we use to control our animations
@@ -5512,5 +6244,50 @@ window.onload = function () {
     }
   });
 };
-},{"tippy.js":"LTUt","tippy.js/dist/tippy.css":"oHVP","lax.js":"qd03"}]},{},["epB2"], null)
+},{"lax.js":"qd03"}],"G934":[function(require,module,exports) {
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+document.addEventListener("DOMContentLoaded", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  var firebaseConfig;
+  return regeneratorRuntime.wrap(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          // Your web app's Firebase configuration
+          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+          firebaseConfig = {
+            apiKey: "AIzaSyCy8xQD4Mr7X23KD1JG2vFsqoQ79H9Mh48",
+            authDomain: "personal-portfolio-48e6c.firebaseapp.com",
+            databaseURL: "https://personal-portfolio-48e6c-default-rtdb.firebaseio.com",
+            projectId: "personal-portfolio-48e6c",
+            storageBucket: "personal-portfolio-48e6c.appspot.com",
+            messagingSenderId: "862487799568",
+            appId: "1:862487799568:web:66ef2bda041e93af26a795",
+            measurementId: "G-FVPXPV6N2H"
+          }; // Initialize Firebase
+
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+          analytics.logEvent("demo");
+
+        case 4:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _callee);
+})));
+},{}],"epB2":[function(require,module,exports) {
+"use strict";
+
+require("regenerator-runtime/runtime");
+
+require("./tipy");
+
+require("./lax");
+
+require("./analytics");
+},{"regenerator-runtime/runtime":"dgxz","./tipy":"CKqK","./lax":"ohUi","./analytics":"G934"}]},{},["epB2"], null)
 //# sourceMappingURL=/bundle.js.map
