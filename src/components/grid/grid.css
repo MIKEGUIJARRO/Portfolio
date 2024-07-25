@@ -1,0 +1,7 @@
+.react-grid-item.react-grid-placeholder {
+    @apply bg-slate-300 z-0 border border-slate-500 rounded-2xl shadow-inner duration-200 transition-all block;
+}
+
+.react-resizable-hide .react-resizable-handle {
+    display: none !important;
+}
