@@ -1,13 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import { Maximize, Minimize } from 'lucide-react';
 
 import { Button } from './ui/button';
 
-export const VideoPlayer = () => {
+interface IVideoPlayerProps {
+    url: string
+}
+
+export const VideoPlayer: FC<IVideoPlayerProps> = ({ url }) => {
 
     const [isFullscreen, setIsFullscreen] = useState(false)
     const [isClient, setIsClient] = useState(false);
@@ -52,7 +56,7 @@ export const VideoPlayer = () => {
                 playing={true}
                 muted={!isFullscreen}
                 config={{ file: { attributes: { controlsList: 'nodownload', disablePictureInPicture: true } } }}
-                url={'https://d29p8yz5fxctco.cloudfront.net/assets/demo-dartcom.mp4'}
+                url={url}
             />}
             <Button
                 className='absolute bottom-0 right-0 m-4 rounded-full'
