@@ -5,16 +5,19 @@ import '/node_modules/react-resizable/css/styles.css'
 import './grid.css'
 
 import { FC, useMemo, useState } from 'react'
-import GridLayout, { ItemCallback, Layout } from "react-grid-layout"
+import GridLayout, { ItemCallback, Layout, Responsive, WidthProvider } from "react-grid-layout"
 
 import { GridItem } from './item'
-import { IGridItem } from './types'
+import { IGridContent, IGridItem } from './types'
+
+const ResponsiveGridLayout = WidthProvider(Responsive)
 
 interface IGridProps {
     items: IGridItem[]
+    GridContent: React.ComponentType<IGridContent>
 }
 
-export const Grid: FC<IGridProps> = ({ items }) => {
+export const Grid: FC<IGridProps> = ({ items, GridContent }) => {
     const [activeDraggedItem, setActiveDraggedItem] = useState<string | null>(null)
     const memoItemsLayout: Layout[] = useMemo(() => items.map((gridItem) => gridItem.layout), [items])
 
@@ -35,33 +38,29 @@ export const Grid: FC<IGridProps> = ({ items }) => {
     }
 
     return (
-        <GridLayout
+        <ResponsiveGridLayout
             className='layout'
             compactType={'vertical'}
-            layout={memoItemsLayout}
-            cols={4}
+            layouts={{ lg: memoItemsLayout, md: memoItemsLayout, sm: memoItemsLayout }}
+            breakpoints={{ lg: 1024, md: 768, sm: 640 }}
+            cols={{ lg: 4, md: 2, sm: 1 }}
             margin={[24, 24]}
             rowHeight={270}
-            width={1200}
             onDragStart={onDragStartHandler}
             onDragStop={onDragStopHandler}
             onDrag={onDragHandler}
             preventCollision={false}
             isResizable={false}>
             {items.map((item) => {
-
                 const isDragging = activeDraggedItem ? activeDraggedItem === item.id : false
-
                 return (
                     <GridItem
                         key={item.id}
                         isDragging={isDragging}>
-                        <div className='p-4 bg-red-100 w-full h-full'>
-                            {item.id}
-                        </div>
+                        <GridContent id={item.id} type={item.type} />
                     </GridItem>
                 )
             })}
-        </GridLayout>
+        </ResponsiveGridLayout>
     )
 }
