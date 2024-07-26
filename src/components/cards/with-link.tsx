@@ -1,5 +1,3 @@
-'use client'
-
 import Link from "next/link";
 import { FC, HTMLAttributeAnchorTarget } from "react";
 import { ArrowUpRight } from "lucide-react";
