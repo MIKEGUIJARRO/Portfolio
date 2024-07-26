@@ -11,4 +11,5 @@ export interface IGridItem {
 export interface IGridContent {
     id: string
     type: GridItemTypes
+    isDragging: boolean
 }
