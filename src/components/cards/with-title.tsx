@@ -13,7 +13,7 @@ export function withTitle<P extends {}>(
         return (
             <div className="relative w-full h-full">
                 <Component {...(props as unknown as P)} />
-                <div className="absolute bottom-0 left-0 m-4">
+                <div className="absolute bottom-0 left-0 my-4 ml-4 mr-20">
                     <p className="px-4 py-2 bg-white/80 backdrop-blur-lg border border-slate-200 rounded-lg">{title}</p>
                 </div>
             </div>
