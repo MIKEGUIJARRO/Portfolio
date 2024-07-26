@@ -4,7 +4,7 @@ import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import './grid.css'
 
-import { FC, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ItemCallback, Layout, Responsive, WidthProvider } from "react-grid-layout"
 
 import { GridItem } from './item'
@@ -12,12 +12,13 @@ import { IGridContent, IGridItem } from './types'
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
-interface IGridProps {
-    items: IGridItem[]
-    GridContent: React.ComponentType<IGridContent>
+interface IGridProps<T> {
+    items: IGridItem<T>[]
+    GridContent: React.ComponentType<IGridContent<T>>
 }
 
-export const Grid: FC<IGridProps> = ({ items, GridContent }) => {
+export function Grid<T>({ items, GridContent }: IGridProps<T>) {
+
     const [activeDraggedItem, setActiveDraggedItem] = useState<string | null>(null)
     const [activeDraggedItemDelayed, setActiveDraggedItemDelayed] = useState<string | null>(null)
 
@@ -57,8 +58,8 @@ export const Grid: FC<IGridProps> = ({ items, GridContent }) => {
                         key={item.id}
                         isDragging={isDragging}
                         isDraggingDelayed={isDraggingDelayed}
-                        >
-                        <GridContent id={item.id} type={item.type} isDragging={isDragging} />
+                    >
+                        <GridContent id={item.id} type={item.type} isDragging={isDragging} data={item.data} />
                     </GridItem>
                 )
             })}
