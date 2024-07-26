@@ -43,7 +43,7 @@ export const GridItem = React.forwardRef<HTMLDivElement, IGridItemProps>(({ styl
             }}
             className={cn(className)}
             {...props}>
-            <div className={`rounded-2xl overflow-hidden w-full h-full hover:cursor-grab transition-shadow duration-200 ${isDragged && 'shadow-2xl'}`}>
+            <div className={`rounded-2xl overflow-hidden w-full h-full hover:cursor-grab transition-all duration-200 ${isDragged && 'shadow-2xl scale-[1.10]'}`}>
                 {children}
             </div>
         </div>
