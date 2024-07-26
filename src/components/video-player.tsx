@@ -59,9 +59,10 @@ export const VideoPlayer: FC<IVideoPlayerProps> = ({ url }) => {
                 url={url}
             />}
             <Button
-                className='absolute bottom-0 right-0 m-4 rounded-full'
+                className='absolute bottom-0 right-0 m-4 rounded-full bg-white/80 backdrop-blur-lg transition-all'
                 variant={'outline'}
                 size="icon"
+                onMouseDown={(e) => { e.stopPropagation() }}
                 onClick={onFullScreen}>
                 {isFullscreen ? <Minimize /> : <Maximize />}
             </Button>
