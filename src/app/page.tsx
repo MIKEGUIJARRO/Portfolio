@@ -1,10 +1,7 @@
-import Image from "next/image";
-
 import { CarouselLogos } from "@/components/carousel-logos";
-import { Grid } from "@/components/grid/grid";
-import { GridContentWrapper } from "./(landing)/_components/grid-content-wrapper";
 import { ProjectsSection } from "./(landing)/_sections/projects";
 import { HeroSection } from "./(landing)/_sections/hero";
+import { AboutMeSection } from "./(landing)/_sections/about-me";
 
 
 export default function Home() {
@@ -15,8 +12,8 @@ export default function Home() {
       <div className="pt-40">
         <ProjectsSection />
       </div>
-      <div className="h-[800px]">
-
+      <div className="pt-40">
+        <AboutMeSection />
       </div>
     </main>
   );
