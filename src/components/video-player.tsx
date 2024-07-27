@@ -29,7 +29,7 @@ export const VideoPlayer: FC<IVideoPlayerProps> = ({ url }) => {
         } else if (screenfull.element === undefined && isFullscreen) {
             setIsFullscreen(false)
         }
-    }, [screenfull.element, isFullscreen])
+    }, [isFullscreen])
 
     useEffect(() => {
         setIsClient(true)
