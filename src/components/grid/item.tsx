@@ -26,3 +26,5 @@ export const GridItem = React.forwardRef<HTMLDivElement, IGridItemProps>(({ styl
         </div>
     )
 })
+
+GridItem.displayName = 'GridItem'
