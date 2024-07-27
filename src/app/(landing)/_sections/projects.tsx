@@ -24,7 +24,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/takeout.png',
                 href: 'https://www.figma.com/design/YI9t7velfcrJDfGktIUUhw/Design-System-Pickup!?node-id=406-524&t=TSGsMmTOhSGHwsp5-1',
                 title: 'Takeout design',
-                alt: 'Image alt'
+                alt: 'Design mockup for the Takeout project'
             }
         },
         {
@@ -36,7 +36,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/datadrive_1.png',
                 href: 'https://github.com/MIKEGUIJARRO/DataDriveBackend?tab=readme-ov-file',
                 title: 'Templating engine for google docs',
-                alt: 'Image alt'
+                alt: 'Screenshot of the DataDrive templating engine for Google Docs'
             }
         },
         {
@@ -48,7 +48,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/merkadito.png',
                 href: 'https://github.com/MIKEGUIJARRO/Merkadito',
                 title: 'Bodega landing',
-                alt: 'Image alt'
+                alt: 'Landing page design for Merkadito'
             }
         },
         {
@@ -60,7 +60,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/old_portfolio_1.png',
                 href: 'https://github.com/MIKEGUIJARRO/Portfolio',
                 title: 'My old portfolio',
-                alt: 'Image alt'
+                alt: 'Screenshot of Miguel\'s old portfolio website'
             }
         },
         {
@@ -72,7 +72,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/blog.png',
                 href: 'https://github.com/MIKEGUIJARRO/BlogApp',
                 title: 'Networking blog',
-                alt: 'Image alt'
+                alt: 'Screenshot of Miguel\'s networking blog'
             }
         },
         {
@@ -84,7 +84,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/my_shop_3.png',
                 href: 'https://github.com/MIKEGUIJARRO/ShopApp',
                 title: 'Ecommerce app',
-                alt: 'Image alt'
+                alt: 'Screenshot of Miguel\'s ecommerce app'
             }
         },
         {
@@ -96,7 +96,7 @@ export function ProjectsSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/my_box_2.png',
                 href: 'https://github.com/MIKEGUIJARRO/MyBox',
                 title: 'Shipping dashboard',
-                alt: 'Image alt'
+                alt: 'Screenshot of the MyBox shipping dashboard'
             },
         },
         {
