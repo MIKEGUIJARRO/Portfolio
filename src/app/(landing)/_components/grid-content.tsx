@@ -19,21 +19,39 @@ export const GridContent = ({ id, type, data }: Omit<IProjectGridContent, 'isDra
     const renderGridContent = () => {
         switch (data.type) {
             case 'image':
+                if (data.href) {
+                    return (
+                        <ImageCardWithTitleWithLink
+                            title={data.title}
+                            href={data.href}
+                            target="_blank"
+                            src={data.src}
+                            alt={data.alt}
+                        />
+                    )
+                }
                 return (
-                    <ImageCardWithTitleWithLink
+                    <ImageCardWithTitle
                         title={data.title}
-                        href={data.href}
-                        target="_blank"
                         src={data.src}
                         alt={data.alt}
                     />
                 )
+
             case 'video':
+                if (data.href) {
+                    return (
+                        <VideoCardWithTitleWithLink
+                            title={data.title}
+                            href={data.href}
+                            target="_blank"
+                            src={data.src}
+                        />
+                    )
+                }
                 return (
-                    <VideoCardWithTitleWithLink
+                    <VideoCardWithTitle
                         title={data.title}
-                        href={data.href}
-                        target="_blank"
                         src={data.src}
                     />
                 )
