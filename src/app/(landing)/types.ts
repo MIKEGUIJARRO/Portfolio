@@ -2,7 +2,7 @@ import { IGridContent, IGridItem } from "@/components/grid/types"
 
 type TProjectDataCommon = {
     title: string
-    href: string
+    href?: string
     src: string
 }
 
