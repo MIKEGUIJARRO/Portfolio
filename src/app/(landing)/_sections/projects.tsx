@@ -11,7 +11,7 @@ export function ProjectsSection() {
             data: {
                 type: 'video',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/demo-dartcom.mp4',
-                href: 'https://tailwindcss.com/docs/text-transform',
+                href: 'https://github.com/Dartcom-Solutions',
                 title: 'Talk to your databases with AI'
             }
         },
@@ -22,19 +22,19 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/takeout.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://www.figma.com/design/YI9t7velfcrJDfGktIUUhw/Design-System-Pickup!?node-id=406-524&t=TSGsMmTOhSGHwsp5-1',
                 title: 'Takeout design',
                 alt: 'Image alt'
             }
         },
         {
             id: 'g_3',
-            layout: { i: "g_3", x: 1, y: 2, w: 3, h: 2 },
+            layout: { i: "g_3", x: 1, y: 13, w: 2, h: 2 },
             type: 'square_1x1',
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/datadrive_1.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/DataDriveBackend?tab=readme-ov-file',
                 title: 'Templating engine for google docs',
                 alt: 'Image alt'
             }
@@ -46,7 +46,7 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/merkadito.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/Merkadito',
                 title: 'Bodega landing',
                 alt: 'Image alt'
             }
@@ -58,7 +58,7 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/old_portfolio_1.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/Portfolio',
                 title: 'My old portfolio',
                 alt: 'Image alt'
             }
@@ -70,7 +70,7 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/blog.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/BlogApp',
                 title: 'Networking blog',
                 alt: 'Image alt'
             }
@@ -82,7 +82,7 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/my_shop_3.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/ShopApp',
                 title: 'Ecommerce app',
                 alt: 'Image alt'
             }
@@ -94,10 +94,21 @@ export function ProjectsSection() {
             data: {
                 type: 'image',
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/my_box_2.png',
-                href: 'https://github.com/contentful/contentful.js',
+                href: 'https://github.com/MIKEGUIJARRO/MyBox',
                 title: 'Shipping dashboard',
                 alt: 'Image alt'
-            }
+            },
+        },
+        {
+            id: 'i',
+            layout: { i: "i", x: 1, y: 2, w: 3, h: 2 },
+            type: 'square_1x1',
+            data: {
+                type: 'video',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/recluta.mp4',
+                href: 'https://github.com/MIKEGUIJARRO/ReclutaClient',
+                title: 'Hiring platform',
+            },
         }
     ]
     return (
