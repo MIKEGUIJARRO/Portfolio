@@ -10,7 +10,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'video',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/demo-dartcom.mp4',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/demo-dartcom.mp4',
                 href: 'https://github.com/Dartcom-Solutions',
                 title: 'Talk to your databases with AI'
             }
@@ -21,7 +21,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/takeout.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/takeout.png',
                 href: 'https://www.figma.com/design/YI9t7velfcrJDfGktIUUhw/Design-System-Pickup!?node-id=406-524&t=TSGsMmTOhSGHwsp5-1',
                 title: 'Takeout design',
                 alt: 'Image alt'
@@ -33,7 +33,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/datadrive_1.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/datadrive_1.png',
                 href: 'https://github.com/MIKEGUIJARRO/DataDriveBackend?tab=readme-ov-file',
                 title: 'Templating engine for google docs',
                 alt: 'Image alt'
@@ -45,7 +45,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/merkadito.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/merkadito.png',
                 href: 'https://github.com/MIKEGUIJARRO/Merkadito',
                 title: 'Bodega landing',
                 alt: 'Image alt'
@@ -57,7 +57,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/old_portfolio_1.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/old_portfolio_1.png',
                 href: 'https://github.com/MIKEGUIJARRO/Portfolio',
                 title: 'My old portfolio',
                 alt: 'Image alt'
@@ -69,7 +69,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/blog.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/blog.png',
                 href: 'https://github.com/MIKEGUIJARRO/BlogApp',
                 title: 'Networking blog',
                 alt: 'Image alt'
@@ -81,7 +81,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/my_shop_3.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/my_shop_3.png',
                 href: 'https://github.com/MIKEGUIJARRO/ShopApp',
                 title: 'Ecommerce app',
                 alt: 'Image alt'
@@ -93,7 +93,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/my_box_2.png',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/my_box_2.png',
                 href: 'https://github.com/MIKEGUIJARRO/MyBox',
                 title: 'Shipping dashboard',
                 alt: 'Image alt'
@@ -105,7 +105,7 @@ export function ProjectsSection() {
             type: 'square_1x1',
             data: {
                 type: 'video',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/recluta.mp4',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/projects/recluta.mp4',
                 href: 'https://github.com/MIKEGUIJARRO/ReclutaClient',
                 title: 'Hiring platform',
             },
