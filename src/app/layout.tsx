@@ -3,9 +3,12 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/toaster"
+import { PHProvider } from './providers'
+const PostHogPageView = dynamic(() => import('@/app/post-hog-page-view'), { ssr: false })
 
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import dynamic from "next/dynamic";
 config.autoAddCss = false
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,10 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Toaster />
-      </body>
+      <PHProvider>
+        <body className={inter.className}>
+          <PostHogPageView />
+          {children}
+          <Toaster />
+        </body>
+      </PHProvider>
     </html>
   );
 }
