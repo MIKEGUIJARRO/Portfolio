@@ -9,6 +9,7 @@ const PostHogPageView = dynamic(() => import('@/app/post-hog-page-view'), { ssr:
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import dynamic from "next/dynamic";
+import { TooltipPortal } from "./tooltip-portal";
 config.autoAddCss = false
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,10 +29,12 @@ export default function RootLayout({
       <PHProvider>
         <body className={inter.className}>
           <PostHogPageView />
-          {children}
+          <TooltipPortal>
+            {children}
+          </TooltipPortal>
           <Toaster />
         </body>
       </PHProvider>
-    </html>
+    </html >
   );
 }
