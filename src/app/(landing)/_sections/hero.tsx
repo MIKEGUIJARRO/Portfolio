@@ -1,5 +1,19 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion, Variants } from "framer-motion";
+
+const itemVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 10
+    },
+    visible: {
+        opacity: 1,
+        y: 0
+    }
+}
 
 export function HeroSection() {
     return (
@@ -12,10 +26,21 @@ export function HeroSection() {
                     </Link>
                 </div>
             </div>
-            <div className="space-y-4 w-full max-w-lg text-center lg:text-start">
-                <h1 className="text-6xl lg:text-8xl font-bold uppercase">Software Engineer</h1>
-                <h2>Currently building <Link href={'https://dartcom.io'} target="_blank">dartcom.io</Link> in public</h2>
-            </div>
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{ visible: { transition: { staggerChildren: 0.6 } } }}
+                className="space-y-4 w-full max-w-lg text-center lg:text-start">
+                <motion.h1
+                    variants={itemVariants}
+                    className="text-6xl lg:text-8xl font-bold uppercase">
+                    Software Engineer
+                </motion.h1>
+                <motion.h2
+                    variants={itemVariants}>
+                    Currently building <Link href={'https://dartcom.io'} target="_blank">dartcom.io</Link> in public
+                </motion.h2>
+            </motion.div>
         </div>
     )
 }
