@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, Variants } from "framer-motion";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 const cardVariants: Variants = {
     below_offscreen: {
