@@ -27,6 +27,7 @@ export const GridContent = ({ id, type, data }: Omit<IProjectGridContent, 'isDra
                             target="_blank"
                             src={data.src}
                             alt={data.alt}
+                            isScaleHover={true}
                         />
                     )
                 }
@@ -35,6 +36,7 @@ export const GridContent = ({ id, type, data }: Omit<IProjectGridContent, 'isDra
                         title={data.title}
                         src={data.src}
                         alt={data.alt}
+                        isScaleHover={true}
                     />
                 )
 

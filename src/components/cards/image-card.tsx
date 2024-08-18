@@ -4,11 +4,12 @@ import { FC } from "react"
 export interface IImageCardProps {
     src: string
     alt: string
+    isScaleHover?: boolean
 }
 
-export const ImageCard: FC<IImageCardProps> = ({ src, alt }) => {
+export const ImageCard: FC<IImageCardProps> = ({ src, alt, isScaleHover = false }) => {
     return (
-        <div className="w-full h-full">
+        <div className={`w-full h-full transition-all duration-500 ${isScaleHover ? 'hover:scale-110' : ''}`}>
             <Image
                 src={src}
                 alt={alt}

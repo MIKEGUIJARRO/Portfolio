@@ -7,7 +7,7 @@ export interface IVideoCardProps {
 
 export const VideoCard: FC<IVideoCardProps> = ({ src }) => {
     return (
-        <div className="w-full h-full">
+        <div className={'w-full h-full'}>
             <VideoPlayer url={src} />
         </div>
     )
