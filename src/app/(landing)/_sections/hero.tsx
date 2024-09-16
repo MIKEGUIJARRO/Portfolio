@@ -1,8 +1,8 @@
 'use client'
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
+import { ImageCard } from "@/components/cards/image-card";
 
 const itemVariants: Variants = {
     hidden: {
@@ -23,7 +23,12 @@ export function HeroSection() {
                 animate="visible"
                 variants={{ visible: { transition: { staggerChildren: 2 } } }}>
                 <motion.div variants={itemVariants}>
-                    <Image src={'/profile_pic.jpeg'} alt="Profile picture" width={400} height={800} className="object-cover w-64 h-96 rounded-3xl" />
+                    <div className="object-cover w-64 h-96 rounded-3xl overflow-hidden">
+                        <ImageCard
+                            alt="Profile picture"
+                            src="/profile_pic.jpeg"
+                        />
+                    </div>
                 </motion.div>
                 <motion.div variants={itemVariants} className="pt-2">
                     <Link href={'https://x.com/mikeguijarro'} target="_blank">
