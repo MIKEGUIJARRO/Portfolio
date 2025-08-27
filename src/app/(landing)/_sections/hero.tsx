@@ -48,7 +48,7 @@ export function HeroSection() {
                 </motion.h1>
                 <motion.h2
                     variants={itemVariants}>
-                    Currently building <Link href={'https://dartcom.io'} target="_blank">dartcom.io</Link> in public
+                    Currently building <span className="text-gray-400 line-through">dartcom.io</span> <Link href={'https://smartops.mx'} target="_blank">smartops.mx</Link> in public
                 </motion.h2>
             </motion.div>
         </div>
