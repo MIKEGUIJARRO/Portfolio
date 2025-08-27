@@ -36,7 +36,7 @@ export function AboutMeSection() {
                 title: 'Graduated summer 2023'
             }
         },
-        {
+        /* {
             id: 'd',
             layout: { i: "d", x: 2, y: 1, w: 1, h: 1 },
             type: 'square_1x1',
@@ -46,7 +46,7 @@ export function AboutMeSection() {
                 title: 'Enjoy hiking',
                 alt: 'Miguel enjoying a hike'
             }
-        },
+        }, */
         {
             id: 'e',
             layout: { i: "e", x: 0, y: 2, w: 2, h: 1 },
@@ -80,17 +80,17 @@ export function AboutMeSection() {
                 alt: 'Miguel and friends at graduation'
             }
         },
-        {
-            id: 'h',
-            layout: { i: "h", x: 3, y: 2, w: 1, h: 2 },
-            type: 'square_1x1',
-            data: {
-                type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/award.PNG',
-                title: 'Awarded with the best entrepreneurial career',
-                alt: 'Miguel receiving an award for best entrepreneurial career'
-            }
-        },
+        /*  {
+             id: 'h',
+             layout: { i: "h", x: 3, y: 2, w: 1, h: 2 },
+             type: 'square_1x1',
+             data: {
+                 type: 'image',
+                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/award.PNG',
+                 title: 'Awarded with the best entrepreneurial career',
+                 alt: 'Miguel receiving an award for best entrepreneurial career'
+             }
+         }, */
         {
             id: 'i',
             layout: { i: "i", x: 3, y: 1, w: 1, h: 1 },
@@ -102,18 +102,7 @@ export function AboutMeSection() {
                 alt: 'Miguel as a valedictorian with a 3.7 GPA'
             }
         },
-        {
-            id: 'j',
-            layout: { i: "j", x: 2, y: 6, w: 1, h: 1 },
-            type: 'square_1x1',
-            data: {
-                type: 'image',
-                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/goat.JPG',
-                title: 'Cole is my favorite rapper',
-                alt: 'Miguel\'s favorite rapper, J. Cole'
-            }
-        },
-        {
+        /* {
             id: 'k',
             layout: { i: "k", x: 0, y: 6, w: 2, h: 2 },
             type: 'square_1x1',
@@ -122,6 +111,49 @@ export function AboutMeSection() {
                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/books.jpeg',
                 title: 'Been reading for a while',
                 alt: 'Miguel\'s collection of books'
+            }
+        }, */
+        {
+            id: 'l',
+            layout: { i: "l", x: 1, y: 10, w: 3, h: 2 },
+            type: 'row_2x1',
+            data: {
+                type: 'video',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/aws_high_impact.mp4',
+                title: 'Building technical excellence at AWS'
+            }
+        },
+        /*   {
+              id: 'm',
+              layout: { i: "m", x: 3, y: 10, w: 1, h: 1 },
+              type: 'square_1x1',
+              data: {
+                  type: 'image',
+                  src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/cook.jpeg',
+                  title: 'Hobbiest cook',
+                  alt: 'Miguel cooking a meal'
+              }
+          }, */
+        /*  {
+             id: 'n',
+             layout: { i: "n", x: 3, y: 9, w: 2, h: 1 },
+             type: 'row_2x1',
+             data: {
+                 type: 'image',
+                 src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/sky.jpeg',
+                 title: 'Down for any adventure',
+                 alt: 'Miguel skydiving'
+             }
+         }, */
+        {
+            id: 'o',
+            layout: { i: "o", x: 0, y: 9, w: 1, h: 2 },
+            type: 'square_1x1',
+            data: {
+                type: 'image',
+                src: 'https://d29p8yz5fxctco.cloudfront.net/assets/about-me/server.jpeg',
+                title: 'Infrastructure nerd',
+                alt: 'Miguel\'s server rack'
             }
         },
     ]
